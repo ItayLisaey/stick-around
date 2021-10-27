@@ -1,0 +1,107 @@
+@use '../../theme/colors' as c;
+
+.root {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background-color: rgba(c.$dark, 0.95);
+    color: c.$light;
+    padding: {
+        block: 3rem;
+        inline: 3rem;
+    }
+    gap: 3rem;
+}
+
+.introContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.welcomeMessage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+    p {
+        margin: 0;
+    }
+    & > p:first-child {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+    & > p:last-child {
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+}
+
+.instruction {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr;
+    grid-template-rows: 10rem;
+    gap: 5rem 1.5rem;
+    p {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+}
+
+.moviePress {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    div {
+        height: 100%;
+        width: 100%;
+    }
+
+    svg {
+        color: #fff;
+        position: absolute;
+        font-size: 2.5rem;
+        bottom: 0;
+        transform: translateY(50%);
+        path {
+            stroke: c.$dark;
+            stroke-width: 1.5rem;
+            stroke-linejoin: round;
+            fill: #fff;
+        }
+    }
+}
+
+.vote {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    svg {
+        height: 2rem;
+        width: 2rem;
+    }
+}
+
+.btnContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    button {
+        font-weight: 700 !important;
+        background-color: c.$light !important;
+    }
+}

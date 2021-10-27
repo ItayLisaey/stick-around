@@ -1,0 +1,30 @@
+@use '../../theme/colors' as c;
+
+.barContainer {
+    width: 100%;
+    padding: {
+        block: 1rem;
+    }
+    // padding-inline: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: c.$light;
+    }
+
+    button {
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    svg {
+        color: c.$light;
+    }
+}

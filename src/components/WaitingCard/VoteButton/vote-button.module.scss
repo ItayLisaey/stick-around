@@ -1,0 +1,40 @@
+.voteContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Assistant', sans-serif;
+  *:focus {
+    outline: 0;
+    outline: none;
+  }
+  cursor: pointer;
+  width: 6rem;
+
+  span {
+    color: honeydew;
+    font-weight: 600;
+  }
+
+  svg {
+    color: honeydew;
+  }
+}
+
+.votedContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 6rem;
+
+  span {
+    color: rgba(240, 255, 240, 0.424);
+    font-weight: 600;
+  }
+
+  svg {
+    color: rgba(240, 255, 240, 0.424);
+  }
+}

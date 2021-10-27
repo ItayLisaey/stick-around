@@ -1,0 +1,27 @@
+@use '../../theme/colors' as c;
+
+.container {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+
+    main {
+        height: 92%;
+        width: 100%;
+    }
+    footer {
+        height: 8%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    background-color: c.$dark;
+
+    .intro {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}

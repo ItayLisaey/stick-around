@@ -1,0 +1,50 @@
+@use "../../../theme/colors" as c;
+
+.modalBox {
+  background-color: c.$dark;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 65%;
+  border-radius: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: {
+    inline: 2rem;
+    block: 2rem;
+  }
+  font-family: "Assistant", sans-serif;
+  span {
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 2rem;
+    color: c.$light;
+  }
+
+  Button {
+    min-width: 6rem;
+    min-height: 6rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      font-size: 3rem;
+    }
+  }
+}
+
+.votingContainer {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: {
+    block: 10%;
+  }
+}
