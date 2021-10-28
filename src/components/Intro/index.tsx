@@ -1,7 +1,7 @@
-import { faHandPointer } from '@fortawesome/free-solid-svg-icons';
+import { faHandPointer, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { HowToVote } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import { registerFirstTime, sampleMovie } from '../../utils/intro.utils';
 import { MovieCard } from '../MovieCard';
 import classes from './intro.module.scss';
@@ -58,6 +58,11 @@ export const Intro: React.VFC<IntroProps> = ({ exit }) => {
                 >
                     Continue
                 </Button>
+            </div>
+            <div className={classes.close}>
+                <IconButton onClick={handleContinue}>
+                    <FontAwesomeIcon icon={faTimes} />
+                </IconButton>
             </div>
         </div>
     );

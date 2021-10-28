@@ -17,12 +17,14 @@
         inline: 3rem;
     }
     gap: 3rem;
+    transition: gap 0.2s ease;
 }
 
 .introContainer {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    transition: gap 0.2s ease;
 }
 
 .welcomeMessage {
@@ -31,6 +33,7 @@
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    transition: gap 0.2s ease;
 
     p {
         margin: 0;
@@ -50,6 +53,8 @@
     grid-template-columns: 0.5fr 1fr;
     grid-template-rows: 10rem;
     gap: 5rem 1.5rem;
+    transition: gap 0.2s ease;
+
     p {
         margin: 0;
         font-size: 1rem;
@@ -103,5 +108,31 @@
     button {
         font-weight: 700 !important;
         background-color: c.$light !important;
+    }
+}
+
+.close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    button {
+        height: 3rem;
+        width: 3rem;
+        color: c.$light;
+    }
+}
+
+@media (max-height: 700px) {
+    .instruction {
+        gap: 1rem 1.5rem;
+    }
+    .introContainer {
+        gap: 0.5rem;
+    }
+    .welcomeMessage {
+        gap: 0.5rem;
+    }
+    .root {
+        gap: 0.5rem;
     }
 }
