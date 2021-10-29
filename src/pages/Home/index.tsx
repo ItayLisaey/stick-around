@@ -11,7 +11,6 @@ import { BottomNav } from '../../components/BottomNav';
 import { HighlightTab } from '../Tabs/HighlightTab';
 import { SearchTab } from '../Tabs/SearchTab';
 import { MoviePage } from '../MoviePage';
-import { DonateTab } from '../Tabs/DonateTab';
 import { checkFirstTime } from '../../utils/intro.utils';
 import { Intro } from '../../components/Intro';
 import classes from './home.module.scss';
@@ -61,15 +60,6 @@ export const Home: React.VFC<HomeProps> = () => {
                     )}
                 </Route>
 
-                <Route path="/donate" exact>
-                    {({ match }) => (
-                        <Fade in={match?.path === history.location.pathname}>
-                            <main>
-                                <DonateTab />
-                            </main>
-                        </Fade>
-                    )}
-                </Route>
                 <Route path="/">
                     <Redirect to="/highlight" />
                 </Route>

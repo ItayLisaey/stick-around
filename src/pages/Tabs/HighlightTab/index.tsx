@@ -1,34 +1,34 @@
-import { CircularProgress } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { getNowPlaying } from '../../../api/nowPlaying';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { CircularProgress, Fade } from '@mui/material';
+import { useCallback, useRef, useState } from 'react';
 import { AppBar } from '../../../components/AppBar';
 import { MovieCard } from '../../../components/MovieCard';
-import { Movie } from '../../../types/movies.interface';
+import useNowPlaying from '../../../hooks/UseNowPlaying';
 import classes from './highlight-tab.module.scss';
 
 export interface HighlightTabProps {}
 
 export const HighlightTab: React.VFC<HighlightTabProps> = () => {
-    const [movies, setMovies] = useState<Movie[]>([]);
+    const [page, setPage] = useState<number>(1);
 
-    useEffect(() => {
-        async function getMovies() {
-            try {
-                const movies = await getNowPlaying().catch((err) => {
-                    throw Error('Error getting movies');
-                });
+    const { movies, hasMore, loading, error } = useNowPlaying(page);
 
-                if (movies) {
-                    setMovies(movies);
-                } else {
-                    throw Error('Movies undefined');
+    const observer = useRef<IntersectionObserver | null>(null);
+
+    const lastCardRef = useCallback(
+        (node) => {
+            if (loading) return;
+            if (observer.current) observer.current.disconnect();
+            observer.current = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && hasMore) {
+                    setPage((p) => p + 1);
                 }
-            } catch (err) {
-                console.error(err);
-            }
-        }
-        getMovies();
-    }, []);
+            });
+            if (node) observer.current.observe(node);
+        },
+        [loading, hasMore]
+    );
 
     return (
         <div className={classes.nowPlayingContainer}>
@@ -36,12 +36,38 @@ export const HighlightTab: React.VFC<HighlightTabProps> = () => {
                 <div className={classes.highlightContainer}>
                     <AppBar title="In Theaters" search />
                     <div className={classes.cardsContainer}>
-                        {movies.map((movie, index) => (
-                                <MovieCard
-                                    movie={movie}
-                                    key={index}
-                                ></MovieCard>
-                            ))}
+                        {movies.map((movie, index) => {
+                            if (movies.length === index + 1) {
+                                return (
+                                    <div ref={lastCardRef}>
+                                        <MovieCard
+                                            movie={movie}
+                                            key={index}
+                                        ></MovieCard>
+                                    </div>
+                                );
+                            } else {
+                                return (
+                                    <MovieCard
+                                        movie={movie}
+                                        key={index}
+                                    ></MovieCard>
+                                );
+                            }
+                        })}
+                        {!error && (
+                            <Fade in={loading}>
+                                <div className={classes.loadingCard}>
+                                    <CircularProgress />
+                                </div>
+                            </Fade>
+                        )}
+
+                        <Fade in={error}>
+                            <div className={classes.errorCard}>
+                                <FontAwesomeIcon icon={faExclamationTriangle} />
+                            </div>
+                        </Fade>
                     </div>
                 </div>
             ) : (
