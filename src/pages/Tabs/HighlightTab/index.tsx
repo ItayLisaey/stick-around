@@ -39,11 +39,8 @@ export const HighlightTab: React.VFC<HighlightTabProps> = () => {
                         {movies.map((movie, index) => {
                             if (movies.length === index + 1) {
                                 return (
-                                    <div ref={lastCardRef}>
-                                        <MovieCard
-                                            movie={movie}
-                                            key={index}
-                                        ></MovieCard>
+                                    <div ref={lastCardRef} key={index}>
+                                        <MovieCard movie={movie}></MovieCard>
                                     </div>
                                 );
                             } else {
