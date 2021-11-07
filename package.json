@@ -5,7 +5,8 @@
         "dev": "vite --host",
         "build": "tsc && eslint src --fix && vite build",
         "serve": "vite preview",
-        "resources": "capacitor-resources -p android,ios"
+        "resources": "capacitor-resources -p android,ios",
+        "open:ios": "npm run build && npx cap sync ios && npx cap open ios"
     },
     "dependencies": {
         "@capacitor/android": "^3.2.4",
