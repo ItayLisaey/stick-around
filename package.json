@@ -34,7 +34,7 @@
         "sass": "^1.42.1"
     },
     "devDependencies": {
-        "@capacitor/cli": "^3.2.4",
+        "@capacitor/cli": "^3.3.1",
         "@types/node": "^16.10.3",
         "@types/react": "^17.0.0",
         "@types/react-dom": "^17.0.0",
