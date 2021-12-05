@@ -1,0 +1,26 @@
+.root {
+    display: flex;
+    padding: {
+        inline: 0.5rem;
+    }
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    gap: 2rem;
+    color: white;
+}
+
+.iconContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+    width: 3rem;
+    font-size: 3rem;
+}
+
+.root > p {
+    font-weight: 600;
+    margin: 0;
+    font-size: 1rem;
+}

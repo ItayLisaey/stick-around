@@ -14,6 +14,7 @@ import { MoviePage } from '../MoviePage';
 import { checkFirstTime } from '../../utils/intro.utils';
 import { Intro } from '../../components/Intro';
 import classes from './home.module.scss';
+import { DonateTab } from '../Tabs/DonateTab';
 
 export interface HomeProps {}
 
@@ -55,6 +56,15 @@ export const Home: React.VFC<HomeProps> = () => {
                         <Fade in={match !== null}>
                             <main>
                                 <SearchTab />
+                            </main>
+                        </Fade>
+                    )}
+                </Route>
+                <Route path="/donate" exact>
+                    {({ match }) => (
+                        <Fade in={match !== null}>
+                            <main>
+                                <DonateTab />
                             </main>
                         </Fade>
                     )}

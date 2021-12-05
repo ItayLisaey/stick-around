@@ -1,13 +1,13 @@
 import { Grow } from '@mui/material';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
-import { posterImageUrlHD } from '../../api/images.api';
+import { posterImageUrlHD } from '../../api/tmdb/images.api';
 import { Movie } from '../../types/movies.interface';
 import classes from './movie-card.module.scss';
 
 export interface MovieCardProps {
-    movie: Movie
-    dummy?: boolean
+    movie: Movie;
+    dummy?: boolean;
 }
 
 export const MovieCard: React.VFC<MovieCardProps> = ({ movie, dummy }) => {

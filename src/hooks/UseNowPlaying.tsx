@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getNowPlaying } from '../api/nowPlaying';
+import { getNowPlaying } from '../api/tmdb/nowPlaying';
 import { Movie } from '../types/movies.interface';
 
 export default function useNowPlaying(pageNumber: number) {

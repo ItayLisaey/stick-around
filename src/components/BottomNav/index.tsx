@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilm, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faFilm, faHeart, faSearch } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import classes from './bottom-nav.module.scss';
@@ -47,7 +47,7 @@ export const BottomNav: React.VFC<BottomNavProps> = () => {
                     <span>Search</span>
                 </div>
             </Button>
-            {/* <Button
+            <Button
                 className={classNames(classes.navBtn, {
                     [classes.selected]:
                         history.location.pathname === linksLocations.donate,
@@ -55,10 +55,10 @@ export const BottomNav: React.VFC<BottomNavProps> = () => {
                 onClick={(e) => handleClick(linksLocations.donate)}
             >
                 <div>
-                    <FontAwesomeIcon icon={faQuestion} />
+                    <FontAwesomeIcon icon={faHeart} />
                     <span>Answers</span>
                 </div>
-            </Button> */}
+            </Button>
         </div>
     );
 };

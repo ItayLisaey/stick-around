@@ -2,9 +2,11 @@
 
 .waitingContainer {
     padding: {
-        inline: 1.4rem;
+        inline: 2rem;
         block: 1rem;
     }
+    overflow-x: hidden;
+    overflow-y: auto;
     background-color: grey;
     box-sizing: border-box;
     border-radius: 0.4rem;

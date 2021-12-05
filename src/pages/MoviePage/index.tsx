@@ -1,14 +1,14 @@
 import { CircularProgress, Zoom } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { getSingleMovie } from '../../api/singleMovie';
+import { getMovieCredits } from '../../api/backend/movies';
+import { getSingleMovie } from '../../api/tmdb/singleMovie';
 import { MovieCard } from '../../components/MovieCard';
 import { WaitingCard } from '../../components/WaitingCard';
 import { Credits, Movie } from '../../types/movies.interface';
-import { afterCreditsCheck } from '../../utils/credits.utils';
 import classes from './movie-page.module.scss';
 
 export interface MoviePageProps {
-    id: string
+    id: string;
 }
 
 export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
@@ -27,14 +27,16 @@ export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
     }, [id]);
 
     useEffect(() => {
+        const movieId = parseInt(id);
         async function getCredits() {
-            setCredits(await afterCreditsCheck(movie!));
+            const c = await getMovieCredits(movieId);
+            if (c) setCredits(c);
         }
 
         if (movie) {
             getCredits();
         }
-    }, [open, movie]);
+    }, [open, movie, id]);
 
     useEffect(() => {
         if (credits) {

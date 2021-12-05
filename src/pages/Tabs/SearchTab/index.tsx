@@ -1,7 +1,7 @@
 import { faFilm, faInbox, faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import { getSearchResults } from '../../../api/search.api';
+import { getSearchResults } from '../../../api/tmdb/search.api';
 import { MovieBar } from '../../../components/MovieBar';
 import { Movie } from '../../../types/movies.interface';
 import classes from './search-tab.module.scss';

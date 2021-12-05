@@ -1,8 +1,6 @@
 import { CircularProgress } from '@mui/material';
 import classNames from 'classnames';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { Credits, creditType, Movie } from '../../types/movies.interface';
 import { shouldWait, waitingText } from '../../utils/credits.utils';
 import { hasVoted } from '../../utils/votes.utils';
@@ -10,12 +8,13 @@ import classes from './waiting-card.module.scss';
 import { CreditsMark } from './CreditsMark';
 import { VoteButton } from './VoteButton';
 import { VotingModal } from './VotingModal';
+import { TrustMessage } from './TrustMessage';
 
 export interface WaitingCardProps {
-    movie: Movie
-    credits: Credits
-    open: boolean
-    setOpen: Dispatch<SetStateAction<boolean>>
+    movie: Movie;
+    credits: Credits;
+    open: boolean;
+    setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export const WaitingCard: React.VFC<WaitingCardProps> = ({
@@ -39,7 +38,7 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
 
     useEffect(() => {
         async function getVoteStatus() {
-            const voteStatus = await hasVoted(movie);
+            const voteStatus = await hasVoted(movie.id);
             if (voteStatus) {
                 setVotingStatus(voteStatus);
             } else {
@@ -68,7 +67,10 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                 <div className={classes.creditsRow}>
                     <div className={classes.creditsContainer}>
                         <span>During the credits?</span>
-                        <CreditsMark subCredits={credits.during} />
+                        <CreditsMark
+                            count={credits.during}
+                            trust={credits.trust}
+                        />
                     </div>
                     <VoteButton
                         onClick={handleOpen}
@@ -79,7 +81,10 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                 <div className={classes.creditsRow}>
                     <div className={classes.creditsContainer}>
                         <span>After the credits?</span>
-                        <CreditsMark subCredits={credits.after} />
+                        <CreditsMark
+                            count={credits.after}
+                            trust={credits.trust}
+                        />
                     </div>
                     <VoteButton
                         onClick={handleOpen}
@@ -87,18 +92,7 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                         hasVoted={votingStatus.after}
                     />
                 </div>
-                {(credits.after.votes === 0 || credits.during.votes === 0) && (
-                    <div className={classes.moreInfo}>
-                        <FontAwesomeIcon icon={faExclamationTriangle} />
-                        <div>
-                            <h3>Results may be inaccurate</h3>
-                            <p>
-                                One or more of the fields has not been voted on
-                                yet
-                            </p>
-                        </div>
-                    </div>
-                )}
+                <TrustMessage trust={credits.trust} />
 
                 <VotingModal
                     open={open}
