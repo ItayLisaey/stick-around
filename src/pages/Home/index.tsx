@@ -15,6 +15,9 @@ import { checkFirstTime } from '../../utils/intro.utils';
 import { Intro } from '../../components/Intro';
 import { SupportTab } from '../Tabs/SupportTab';
 import classes from './home.module.scss';
+import { Broadcast as IBroadcast } from '../../types/broadcast.interface';
+import { getLatestBroadcast } from '../../api/backend/broadcast';
+import { Broadcast } from '../../components/Broadcast';
 
 export interface HomeProps {}
 
@@ -22,10 +25,18 @@ export const Home: React.VFC<HomeProps> = () => {
     const history = useHistory();
     const location = useLocation();
     const [firstTime, setFirstTime] = useState(false);
+    const [broadcast, setBroadcast] = useState<IBroadcast | null>();
 
     useEffect(() => {
         async function check() {
             setFirstTime(await checkFirstTime());
+        }
+        check();
+    });
+
+    useEffect(() => {
+        async function check() {
+            setBroadcast(await getLatestBroadcast());
         }
         check();
     });
@@ -82,6 +93,7 @@ export const Home: React.VFC<HomeProps> = () => {
                 <BottomNav />
             </footer>
             {firstTime && <Intro exit={setFirstTime} />}
+            {!firstTime && broadcast && <Broadcast broadcast={broadcast} />}
         </div>
     );
 };
