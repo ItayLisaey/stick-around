@@ -13,8 +13,8 @@ import { SearchTab } from '../Tabs/SearchTab';
 import { MoviePage } from '../MoviePage';
 import { checkFirstTime } from '../../utils/intro.utils';
 import { Intro } from '../../components/Intro';
-import classes from './home.module.scss';
 import { SupportTab } from '../Tabs/SupportTab';
+import classes from './home.module.scss';
 
 export interface HomeProps {}
 

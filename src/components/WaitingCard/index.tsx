@@ -66,7 +66,9 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                 <h2>{waitingText(should)}</h2>
                 <div className={classes.creditsRow}>
                     <div className={classes.creditsContainer}>
-                        <span>During the credits?</span>
+                        <span>
+                            <em>During</em> the credits?
+                        </span>
                         <CreditsMark
                             count={credits.during}
                             trust={credits.trust}
@@ -80,7 +82,9 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                 </div>
                 <div className={classes.creditsRow}>
                     <div className={classes.creditsContainer}>
-                        <span>After the credits?</span>
+                        <span>
+                            <em>After</em> the credits?
+                        </span>
                         <CreditsMark
                             count={credits.after}
                             trust={credits.trust}

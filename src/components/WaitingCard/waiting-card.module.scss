@@ -75,6 +75,10 @@
     // align-items: center;
     span {
         justify-self: flex-start;
+        em {
+            font-style: normal;
+            font-weight: 800;
+        }
     }
 }
 
