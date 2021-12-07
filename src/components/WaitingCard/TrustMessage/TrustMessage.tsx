@@ -17,12 +17,7 @@ export interface TrustMessageProps {
 export const TrustMessage: React.VFC<TrustMessageProps> = ({ trust }) => {
     switch (trust) {
         case 1:
-            return (
-                <TrustItem
-                    icon={faCertificate}
-                    message={TRUST_MESSAGES.Certified}
-                />
-            );
+            return <TrustItemCertified icon={faCertificate} />;
         case 2:
             return <TrustItem icon={faUsers} message={TRUST_MESSAGES.Users} />;
         case 3:
@@ -57,5 +52,23 @@ export const TrustItem: React.VFC<TrustItemProps> = ({ icon, message }) => (
             <FontAwesomeIcon icon={icon} />
         </div>
         <p>{message}</p>
+    </div>
+);
+
+interface TrustItemCertifiedProps {
+    icon: IconProp;
+}
+
+export const TrustItemCertified: React.VFC<TrustItemCertifiedProps> = ({
+    icon,
+}) => (
+    <div className={classes.root}>
+        <div className={classes.iconContainer}>
+            <FontAwesomeIcon icon={icon} />
+        </div>
+        <div className={classes.textContainer}>
+            <h5>Certified</h5>
+            <p>These results have been confirmed by our moderators</p>
+        </div>
     </div>
 );

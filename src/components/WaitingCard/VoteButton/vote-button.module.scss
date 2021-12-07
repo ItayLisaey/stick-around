@@ -1,3 +1,5 @@
+@use '../../../theme/colors' as c;
+
 .voteContainer {
     display: flex;
     flex-direction: column;
@@ -19,14 +21,15 @@
         font-family: 'Assistant', sans-serif;
 
         font-size: 0.7rem;
-        color: #261c2c;
+        color: rgba($color: c.$dark, $alpha: 0.8);
+
         font-weight: 800;
     }
 
     svg {
         height: 1.2rem;
         width: 1.2rem;
-        color: #261c2c;
+        color: rgba($color: c.$dark, $alpha: 0.8);
     }
 }
 
@@ -43,13 +46,13 @@
         font-family: 'Assistant', sans-serif;
 
         font-size: 0.7rem;
-        color: rgba(122, 122, 122, 0.424);
+        color: rgba($color: c.$dark, $alpha: 0.3);
         font-weight: 800;
     }
 
     svg {
         height: 1.2rem;
         width: 1.2rem;
-        color: rgba(122, 122, 122, 0.424);
+        color: rgba($color: c.$dark, $alpha: 0.3);
     }
 }
