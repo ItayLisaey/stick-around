@@ -24,4 +24,32 @@
         top: 0;
         left: 0;
     }
+    transition: all 0.3s ease;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        box-sizing: border-box;
+        padding: {
+            inline: 20%;
+        }
+    }
+}
+
+@media (min-width: 1600px) {
+    .container {
+        box-sizing: border-box;
+        padding: {
+            inline: 30%;
+        }
+    }
+}
+
+@media (min-width: 1800px) {
+    .container {
+        box-sizing: border-box;
+        padding: {
+            inline: 35%;
+        }
+    }
 }
