@@ -1,40 +1,55 @@
 .voteContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Assistant', sans-serif;
-  *:focus {
-    outline: 0;
-    outline: none;
-  }
-  cursor: pointer;
-  width: 6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Assistant', sans-serif;
+    padding: 0 !important;
+    min-width: auto !important;
+    width: 2.5rem;
 
-  span {
-    color: honeydew;
-    font-weight: 600;
-  }
+    *:focus {
+        outline: 0;
+        outline: none;
+    }
+    cursor: pointer;
+    // width: 2rem;
 
-  svg {
-    color: honeydew;
-  }
+    span {
+        font-family: 'Assistant', sans-serif;
+
+        font-size: 0.7rem;
+        color: #261c2c;
+        font-weight: 800;
+    }
+
+    svg {
+        height: 1.2rem;
+        width: 1.2rem;
+        color: #261c2c;
+    }
 }
 
 .votedContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0 !important;
+    min-width: auto !important;
+    width: 2.5rem;
+    span {
+        font-family: 'Assistant', sans-serif;
 
-  span {
-    color: rgba(240, 255, 240, 0.424);
-    font-weight: 600;
-  }
+        font-size: 0.7rem;
+        color: rgba(122, 122, 122, 0.424);
+        font-weight: 800;
+    }
 
-  svg {
-    color: rgba(240, 255, 240, 0.424);
-  }
+    svg {
+        height: 1.2rem;
+        width: 1.2rem;
+        color: rgba(122, 122, 122, 0.424);
+    }
 }

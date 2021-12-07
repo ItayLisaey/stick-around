@@ -71,12 +71,12 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                             count={credits.during}
                             trust={credits.trust}
                         />
+                        <VoteButton
+                            onClick={handleOpen}
+                            creditType={'during'}
+                            hasVoted={votingStatus.during}
+                        />
                     </div>
-                    <VoteButton
-                        onClick={handleOpen}
-                        creditType={'during'}
-                        hasVoted={votingStatus.during}
-                    />
                 </div>
                 <div className={classes.creditsRow}>
                     <div className={classes.creditsContainer}>
@@ -85,12 +85,12 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                             count={credits.after}
                             trust={credits.trust}
                         />
+                        <VoteButton
+                            onClick={handleOpen}
+                            creditType={'after'}
+                            hasVoted={votingStatus.after}
+                        />
                     </div>
-                    <VoteButton
-                        onClick={handleOpen}
-                        creditType={'after'}
-                        hasVoted={votingStatus.after}
-                    />
                 </div>
                 <TrustMessage trust={credits.trust} />
 

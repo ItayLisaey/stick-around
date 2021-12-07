@@ -14,7 +14,7 @@ import { MoviePage } from '../MoviePage';
 import { checkFirstTime } from '../../utils/intro.utils';
 import { Intro } from '../../components/Intro';
 import classes from './home.module.scss';
-import { DonateTab } from '../Tabs/DonateTab';
+import { SupportTab } from '../Tabs/SupportTab';
 
 export interface HomeProps {}
 
@@ -64,7 +64,7 @@ export const Home: React.VFC<HomeProps> = () => {
                     {({ match }) => (
                         <Fade in={match !== null}>
                             <main>
-                                <DonateTab />
+                                <SupportTab />
                             </main>
                         </Fade>
                     )}

@@ -1,8 +1,8 @@
-import classes from './donate-tab.module.scss';
+import classes from './support-tab.module.scss';
 
 export interface DonateTabProps {}
 
-export const DonateTab: React.VFC<DonateTabProps> = () => {
+export const SupportTab: React.VFC<DonateTabProps> = () => {
     return (
         <div className={classes.root}>
             <h1>hey</h1>

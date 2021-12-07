@@ -56,7 +56,7 @@ export const BottomNav: React.VFC<BottomNavProps> = () => {
             >
                 <div>
                     <FontAwesomeIcon icon={faHeart} />
-                    <span>Answers</span>
+                    <span>Support</span>
                 </div>
             </Button>
         </div>
