@@ -65,7 +65,11 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                 <h1>Should you wait?</h1>
                 <h2>{waitingText(should)}</h2>
                 <div className={classes.creditsRow}>
-                    <div className={classes.creditsContainer}>
+                    <div
+                        className={classNames(classes.creditsContainer, {
+                            [classes.admin]: credits.trust === 1,
+                        })}
+                    >
                         <span>
                             <em>During</em> the credits?
                         </span>
@@ -73,15 +77,21 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                             count={credits.during}
                             trust={credits.trust}
                         />
-                        <VoteButton
-                            onClick={handleOpen}
-                            creditType={'during'}
-                            hasVoted={votingStatus.during}
-                        />
+                        {credits.trust !== 1 && (
+                            <VoteButton
+                                onClick={handleOpen}
+                                creditType={'during'}
+                                hasVoted={votingStatus.during}
+                            />
+                        )}
                     </div>
                 </div>
                 <div className={classes.creditsRow}>
-                    <div className={classes.creditsContainer}>
+                    <div
+                        className={classNames(classes.creditsContainer, {
+                            [classes.admin]: credits.trust === 1,
+                        })}
+                    >
                         <span>
                             <em>After</em> the credits?
                         </span>
@@ -89,11 +99,13 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                             count={credits.after}
                             trust={credits.trust}
                         />
-                        <VoteButton
-                            onClick={handleOpen}
-                            creditType={'after'}
-                            hasVoted={votingStatus.after}
-                        />
+                        {credits.trust !== 1 && (
+                            <VoteButton
+                                onClick={handleOpen}
+                                creditType={'after'}
+                                hasVoted={votingStatus.after}
+                            />
+                        )}
                     </div>
                 </div>
                 <TrustMessage trust={credits.trust} />

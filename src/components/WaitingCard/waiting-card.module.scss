@@ -82,6 +82,10 @@
     }
 }
 
+.creditsContainer.admin {
+    grid-template-columns: 3fr 1fr;
+}
+
 .votes {
     width: 2rem;
     height: 2rem;
