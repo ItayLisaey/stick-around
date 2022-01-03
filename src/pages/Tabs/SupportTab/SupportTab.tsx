@@ -1,3 +1,4 @@
+import { DONATE_CONST } from '../../../constants/donate.constant';
 import classes from './support-tab.module.scss';
 
 export interface DonateTabProps {}
@@ -14,6 +15,8 @@ export const SupportTab: React.VFC<DonateTabProps> = () => (
             quibusdam necessitatibus tempora neque nesciunt possimus illum,
             doloremque ipsam?
         </p>
-        <button>donate</button>
+        <a href={DONATE_CONST.link} target={'_blank'} rel="noreferrer">
+            donate
+        </a>
     </div>
 );

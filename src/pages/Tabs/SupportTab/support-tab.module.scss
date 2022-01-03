@@ -9,6 +9,36 @@
         block: 2rem;
         inline: 10%;
     }
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1rem;
 
     color: c.$light;
+    a,
+    a:hover,
+    a:focus,
+    a:active {
+        text-decoration: none;
+        color: inherit;
+    }
+    a {
+        border-radius: 0.2rem;
+        padding: {
+            block: 0.5rem;
+            inline: 1.5rem;
+        }
+        background-color: c.$light;
+        color: c.$dark;
+        transition: all 0.2s ease;
+        &:hover {
+            background-color: rgba($color: c.$light, $alpha: 0.8);
+            color: c.$dark;
+        }
+        &:active {
+            background-color: rgba($color: c.$light, $alpha: 0.9);
+            color: c.$dark;
+        }
+    }
 }
