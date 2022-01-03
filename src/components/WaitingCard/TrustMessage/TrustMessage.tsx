@@ -12,12 +12,16 @@ import classes from './trust-message.module.scss';
 
 export interface TrustMessageProps {
     trust: Trust;
+    total: number;
 }
 
-export const TrustMessage: React.VFC<TrustMessageProps> = ({ trust }) => {
+export const TrustMessage: React.VFC<TrustMessageProps> = ({
+    trust,
+    total,
+}) => {
     switch (trust) {
         case 1:
-            return <TrustItemCertified icon={faCertificate} />;
+            return <TrustItemCertified icon={faCertificate} total={total} />;
         case 2:
             return <TrustItem icon={faUsers} message={TRUST_MESSAGES.Users} />;
         case 3:
@@ -57,18 +61,32 @@ export const TrustItem: React.VFC<TrustItemProps> = ({ icon, message }) => (
 
 interface TrustItemCertifiedProps {
     icon: IconProp;
+    total: number;
 }
 
 export const TrustItemCertified: React.VFC<TrustItemCertifiedProps> = ({
     icon,
-}) => (
-    <div className={classes.root}>
-        <div className={classes.iconContainer}>
-            <FontAwesomeIcon icon={icon} />
+    total,
+}) => {
+    const totalVotes = (t: number) => {
+        if (t < 50 || t > 5000) {
+            return '';
+        } else {
+            return `, and over ${total} user votes`;
+        }
+    };
+    return (
+        <div className={classes.root}>
+            <div className={classes.iconContainer}>
+                <FontAwesomeIcon icon={icon} />
+            </div>
+            <div className={classes.textContainer}>
+                <h5>Certified</h5>
+                <p>
+                    {'These results have been confirmed by our moderators' +
+                        totalVotes(total)}
+                </p>
+            </div>
         </div>
-        <div className={classes.textContainer}>
-            <h5>Certified</h5>
-            <p>These results have been confirmed by our moderators</p>
-        </div>
-    </div>
-);
+    );
+};

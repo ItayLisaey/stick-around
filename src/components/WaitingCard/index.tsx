@@ -108,7 +108,7 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                         )}
                     </div>
                 </div>
-                <TrustMessage trust={credits.trust} />
+                <TrustMessage trust={credits.trust} total={credits.total} />
 
                 <VotingModal
                     open={open}
