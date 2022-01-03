@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getNowPlaying } from '../api/tmdb/nowPlaying';
 import { Movie } from '../types/movies.interface';
 
@@ -8,16 +8,20 @@ export default function useNowPlaying(pageNumber: number) {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [hasMore, setHasMore] = useState(false);
 
+    const getMovies = useCallback(async (pageNum: number) => {
+        const mvs = await getNowPlaying(pageNum);
+        if (mvs) {
+            setMovies((m) => m.concat(mvs));
+            setHasMore(mvs.length > 0);
+            setLoading(false);
+        } else {
+            setError(true);
+        }
+    }, []);
+
     useEffect(() => {
-        setLoading(true);
-        getNowPlaying(pageNumber)
-            .then((res) => {
-                setMovies((m) => m.concat(res!));
-                setHasMore(res!.length > 0);
-                setLoading(false);
-            })
-            .catch((e) => setError(true));
-    }, [pageNumber]);
+        getMovies(pageNumber);
+    }, [getMovies, pageNumber]);
 
     return { loading, movies, hasMore, error };
 }
