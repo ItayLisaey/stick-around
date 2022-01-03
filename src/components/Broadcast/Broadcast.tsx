@@ -12,8 +12,8 @@ export interface BroadcastProps {
 
 export const Broadcast: React.VFC<BroadcastProps> = ({ broadcast, exit }) => {
     useEffect(() => {
-        setLatestBroadcastID(broadcast.bid)
-    }, [broadcast.bid])
+        setLatestBroadcastID(broadcast.bid);
+    }, [broadcast.bid]);
 
     return <div className={classes.root}>
         <button onClick={exit}>

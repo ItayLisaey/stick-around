@@ -14,10 +14,10 @@ import { MoviePage } from '../MoviePage';
 import { checkFirstTime } from '../../utils/intro.utils';
 import { Intro } from '../../components/Intro';
 import { SupportTab } from '../Tabs/SupportTab';
-import classes from './home.module.scss';
 import { Broadcast as IBroadcast } from '../../types/broadcast.interface';
 import { getLatestBroadcast } from '../../api/backend/broadcast';
 import { Broadcast } from '../../components/Broadcast';
+import classes from './home.module.scss';
 
 export interface HomeProps { }
 
