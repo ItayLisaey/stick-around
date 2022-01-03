@@ -1,5 +1,14 @@
+@use '../../../theme/colors' as c;
+
 .root {
     * {
         margin: 0;
     }
+
+    padding: {
+        block: 2rem;
+        inline: 10%;
+    }
+
+    color: c.$light;
 }

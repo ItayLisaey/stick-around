@@ -1,64 +1,72 @@
 import { Button } from '@mui/material';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilm, faHeart, faSearch } from '@fortawesome/free-solid-svg-icons';
+import {
+    faFilm,
+    faHeart,
+    faSearch,
+    IconDefinition,
+} from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import classes from './bottom-nav.module.scss';
+import { useEffect, useState } from 'react';
+
+interface TabProps {
+    title: string;
+    location: string;
+    icon: IconDefinition;
+}
+
+const tabs: Record<string, TabProps> = {
+    theaters: {
+        title: 'In Theaters',
+        location: '/highlight',
+        icon: faFilm,
+    },
+    search: {
+        title: 'Search',
+        location: '/search',
+        icon: faSearch,
+    },
+    donate: {
+        title: 'Support',
+        location: '/donate',
+        icon: faHeart,
+    },
+};
 
 export interface BottomNavProps {}
 
 export const BottomNav: React.VFC<BottomNavProps> = () => {
+    const [selected, setSelected] = useState<string>();
     const history = useHistory();
 
-    const linksLocations = {
-        theaters: '/highlight',
-        search: '/search',
-        donate: '/donate',
-    };
-
     function handleClick(location: string) {
+        setSelected(location);
         history.push(location);
     }
 
+    useEffect(() => {
+        setSelected(history.location.pathname);
+    }, [history.location.pathname]);
+
     return (
         <div className={classes.box}>
-            <Button
-                className={classNames(classes.navBtn, {
-                    [classes.selected]:
-                        history.location.pathname === linksLocations.theaters,
-                })}
-                onClick={(e) => handleClick(linksLocations.theaters)}
-            >
-                <div>
-                    <FontAwesomeIcon icon={faFilm} />
-                    <span>In Theaters</span>
-                </div>
-            </Button>
-            <Button
-                className={classNames(classes.navBtn, {
-                    [classes.selected]:
-                        history.location.pathname === linksLocations.search,
-                })}
-                onClick={(e) => handleClick(linksLocations.search)}
-            >
-                <div>
-                    <FontAwesomeIcon icon={faSearch} />
-                    <span>Search</span>
-                </div>
-            </Button>
-            <Button
-                className={classNames(classes.navBtn, {
-                    [classes.selected]:
-                        history.location.pathname === linksLocations.donate,
-                })}
-                onClick={(e) => handleClick(linksLocations.donate)}
-            >
-                <div>
-                    <FontAwesomeIcon icon={faHeart} />
-                    <span>Support</span>
-                </div>
-            </Button>
+            {Object.values(tabs).map((tab, key) => (
+                <Button
+                    key={key}
+                    className={classNames(classes.navBtn, {
+                        [classes.selected]: selected === tab.location,
+                    })}
+                    onClick={(e) => handleClick(tab.location)}
+                >
+                    <div>
+                        <FontAwesomeIcon icon={tab.icon} />
+                        <span>{tab.title}</span>
+                    </div>
+                </Button>
+            ))}
         </div>
     );
 };
