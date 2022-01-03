@@ -1,5 +1,5 @@
 export interface Broadcast {
-    id: number;
+    bid: number;
     title: string;
     description: string;
     createdAt: Date;

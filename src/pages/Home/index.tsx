@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
     Switch,
     Route,
@@ -19,7 +19,7 @@ import { Broadcast as IBroadcast } from '../../types/broadcast.interface';
 import { getLatestBroadcast } from '../../api/backend/broadcast';
 import { Broadcast } from '../../components/Broadcast';
 
-export interface HomeProps {}
+export interface HomeProps { }
 
 export const Home: React.VFC<HomeProps> = () => {
     const history = useHistory();
@@ -32,14 +32,18 @@ export const Home: React.VFC<HomeProps> = () => {
             setFirstTime(await checkFirstTime());
         }
         check();
-    });
+    }, []);
 
     useEffect(() => {
         async function check() {
             setBroadcast(await getLatestBroadcast());
         }
         check();
-    });
+    }, []);
+
+    const exitBroadcast = useCallback(() => {
+        setBroadcast(null);
+    }, []);
 
     return (
         <div className={classes.container}>
@@ -93,7 +97,7 @@ export const Home: React.VFC<HomeProps> = () => {
                 <BottomNav />
             </footer>
             {firstTime && <Intro exit={setFirstTime} />}
-            {!firstTime && broadcast && <Broadcast broadcast={broadcast} />}
+            {!firstTime && broadcast && <Broadcast broadcast={broadcast} exit={exitBroadcast} />}
         </div>
     );
 };

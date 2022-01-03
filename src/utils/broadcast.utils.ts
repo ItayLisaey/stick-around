@@ -9,9 +9,11 @@ export async function getLatestBroadcastID(): Promise<number> {
     }
 }
 
-export async function setLatestBroadcastID(id: number) {
-    await Storage.set({
-        key: 'broadcast',
-        value: id.toString(),
-    });
+export async function setLatestBroadcastID(id: number | undefined) {
+    if (id) {
+        await Storage.set({
+            key: 'broadcast',
+            value: id.toString(),
+        });
+    }
 }

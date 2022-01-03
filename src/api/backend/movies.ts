@@ -1,14 +1,12 @@
 import { emptyCredits } from '../../constants/credits.constants';
 import { Credits, creditType } from '../../types/movies.interface';
+import { getBackendURL } from '../../utils/api.utils';
 import { registerVote } from '../../utils/votes.utils';
 import { authenticate } from './auth';
-// const backend_url = import.meta.env.BACKEND;
 
-export const backend_url =
-    'https://stick-around-backend-ie7sxtuaoa-uc.a.run.app/api';
 export async function getMovieCredits(movieId: number) {
     try {
-        const response = await fetch(`${backend_url}/movies/${movieId}`)
+        const response = await fetch(`${getBackendURL()}/movies/${movieId}`)
             .then((res) => res.json())
             .catch((err) => err);
 
@@ -27,7 +25,7 @@ export async function fireVote(
     type: creditType,
     content: boolean
 ): Promise<boolean> {
-    const base = `${backend_url}/vote`;
+    const base = `${getBackendURL()}/vote`;
     const response = await fetch(
         `${base}/${type}/${movieIndex}/?vote=${content}`,
         {
