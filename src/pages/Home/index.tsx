@@ -1,11 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import {
-    Switch,
-    Route,
-    useLocation,
-    useHistory,
-    Redirect,
-} from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { Fade, Grow } from '@mui/material';
 import { BottomNav } from '../../components/BottomNav';
 import { HighlightTab } from '../Tabs/HighlightTab';
@@ -19,11 +13,9 @@ import { getLatestBroadcast } from '../../api/backend/broadcast';
 import { Broadcast } from '../../components/Broadcast';
 import classes from './home.module.scss';
 
-export interface HomeProps { }
+export interface HomeProps {}
 
 export const Home: React.VFC<HomeProps> = () => {
-    const history = useHistory();
-    const location = useLocation();
     const [firstTime, setFirstTime] = useState(false);
     const [broadcast, setBroadcast] = useState<IBroadcast | null>();
 
@@ -97,7 +89,9 @@ export const Home: React.VFC<HomeProps> = () => {
                 <BottomNav />
             </footer>
             {firstTime && <Intro exit={setFirstTime} />}
-            {!firstTime && broadcast && <Broadcast broadcast={broadcast} exit={exitBroadcast} />}
+            {!firstTime && broadcast && (
+                <Broadcast broadcast={broadcast} exit={exitBroadcast} />
+            )}
         </div>
     );
 };
