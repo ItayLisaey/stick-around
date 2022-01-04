@@ -30,4 +30,4 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npx cap sync
-      - run: android && cd android && ./gradlew assembleDebug && cd ..
+      - run: npx cap build android --no-open && cd android && ./gradlew assembleDebug && ./gradlew assembleRelease
