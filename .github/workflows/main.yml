@@ -25,12 +25,18 @@ jobs:
       - uses: actions/setup-node@v2
         with:
          node-version: '14'
+      - name: npm stuff
       - run: npm install
       - run: npm test
       - run: npm run build
+      - name: capacitor build
       - run: npx cap sync
-  android-build:
-    runs-on: ubuntu-latest
-    steps:
       - run: sudo cd android && chmod +x gradlew && ./gradlew assembleDebug && cd ..
+      - name: upload android apk as artifact
+        uses: actions/upload-artifact@v2.3.1
+        with:
+         name: android-debug
+         path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      
 
