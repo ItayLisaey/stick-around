@@ -30,4 +30,4 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npx cap sync
-      - run: sudo npx cap copy android && cd android && ./gradlew assembleDebug && cd ..
+      - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew assembleDebug && cd ..
