@@ -31,20 +31,5 @@ jobs:
         with:
          name: android-debug
          path: android/app/build/outputs/apk/debug/app-debug.apk      
-  upload-build:
-    runs-on: ubuntu-latest
-    needs: capacitor-build
-    steps:
-      - name: Download Android APK Artifact
-        uses: actions/download-artifact@v2.1.0
-        with:
-         name: android-debug
-         path: android/app/build/outputs/apk/debug/app-debug.apk      
-  release:
-    runs-on: ubuntu-latest
-    needs: capacitor-build
-    steps:
-      - name: Github Release
-        uses: elgohr/Github-Release-Action@v3.1
-        with:
-          release: "Stick-Around Android App"
+
+
