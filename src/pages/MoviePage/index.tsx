@@ -1,7 +1,9 @@
 import { CircularProgress, Zoom } from '@mui/material';
+import { logEvent } from 'firebase/analytics';
 import { useEffect, useState } from 'react';
 import { getMovieCredits } from '../../api/backend/movies';
 import { getSingleMovie } from '../../api/tmdb/singleMovie';
+import { analytics } from '../../App';
 import { MovieCard } from '../../components/MovieCard';
 import { WaitingCard } from '../../components/WaitingCard';
 import { Credits, Movie } from '../../types/movies.interface';
@@ -45,6 +47,14 @@ export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
             setWaitingCardLoaded(false);
         }
     }, [credits]);
+
+    useEffect(() => {
+        if (movie) {
+            logEvent(analytics, 'page_view', {
+                page_title: `movie-page-${movie.id}`,
+            });
+        }
+    }, [movie]);
 
     if (movie) {
         return (
