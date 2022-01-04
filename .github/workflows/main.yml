@@ -26,10 +26,17 @@ jobs:
       - run: npm run build
       - run: npx cap sync
       - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew assembleDebug && cd ..
-      - name: upload android apk as artifact
+      - name: Upload Android APK Artifact
         uses: actions/upload-artifact@v2.3.1
         with:
          name: android-debug
          path: android/app/build/outputs/apk/debug/app-debug.apk      
-      
+  upload-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Android APK Artifact
+        uses: actions/download-artifact@v2.1.0
+        with:
+         name: android-debug
+         path: android/app/build/outputs/apk/debug/app-debug.apk      
 
