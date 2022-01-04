@@ -1,8 +1,10 @@
 import { faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Modal } from '@mui/material';
+import { logEvent } from 'firebase/analytics';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { handleVoteAuth } from '../../../api/backend/movies';
+import { analytics } from '../../../App';
 import theme from '../../../theme/theme';
 import { Movie } from '../../../types/movies.interface';
 import classes from './voting-modal.module.scss';
@@ -39,13 +41,16 @@ export const VotingModal: React.VFC<VotingModalProps> = ({
 
     async function handleVote(boolean: boolean) {
         if (!votingStatus[creditType]) {
+            logEvent(analytics, 'vote', { movie: movie.title, vote: boolean });
             setVoted(true);
-
             const voteTry = await handleVoteAuth(movie.id, creditType, boolean);
             if (!voteTry) {
                 console.error('Voting error');
+                logEvent(analytics, 'vote-success', { success: false });
+            } else {
+                logEvent(analytics, 'vote-success', { success: true });
+                setOpen(false);
             }
-            setOpen(false);
         }
     }
 

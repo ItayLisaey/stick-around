@@ -9,8 +9,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
-import classes from './bottom-nav.module.scss';
 import { useEffect, useState } from 'react';
+import classes from './bottom-nav.module.scss';
 
 interface TabProps {
     title: string;
