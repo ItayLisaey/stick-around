@@ -1,10 +1,10 @@
-name: Build
+name: Release App on Google Play
 
 on:
     push:
-        branches: [next]
+        branches: [main]
     pull_request:
-        branches: [next]
+        branches: [main]
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
@@ -37,7 +37,7 @@ jobs:
                   serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
                   packageName: com.stickaround.app
                   releaseFiles: android/app/build/outputs/bundle/release/*.aab
-                  track: beta
+                  track: production
                   inAppUpdatePriority: 0
                   whatsNewDirectory: distribution/whatsnew
                   mappingFile: android/app/build/outputs/mapping/release/mapping.txt
