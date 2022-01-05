@@ -1,4 +1,4 @@
-name: Build
+name: Release App on Google Play - BETA
 
 on:
     push:

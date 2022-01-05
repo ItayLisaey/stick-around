@@ -1,4 +1,4 @@
-name: Release App on Google Play
+name: Release App on Google Play - PROD
 
 on:
     push:
