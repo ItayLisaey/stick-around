@@ -47,4 +47,4 @@ jobs:
                   whatsNewDirectory: distribution/whatsnew
                   mappingFile: android/app/build/outputs/mapping/release/mapping.txt
                   status: completed
-                  changesNotSentForReview: true
+                  changesNotSentForReview: false
