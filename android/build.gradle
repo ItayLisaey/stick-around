@@ -27,3 +27,19 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+
+// sauce: https://www.rockandnull.com/update-app-version-android/
+task('increaseVersionCode') {
+    def buildGradle = file("build.gradle")
+    def buildGradleContents = buildGradle.getText()
+    def matcher =
+      Pattern.compile("versionCode(\\s+\\d+)").matcher(buildGradleContents)
+    def versionCode = android.defaultConfig.versionCode
+    buildGradle.write(matcher.replaceAll("versionCode " + ++versionCode))
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'generateReleaseBuildConfig') {
+        task.dependsOn 'increaseVersionCode'
+    }
