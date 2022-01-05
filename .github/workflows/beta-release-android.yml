@@ -29,7 +29,7 @@ jobs:
               uses: chkfung/android-version-actions@v1.1
               with:
                   gradlePath: android/app/build.gradle # or app/build.gradle.kts
-                  versionCode: ${{ ANDROID_VERSION_CODE }} + 1
+                  versionCode: $ANDROID_VERSION_CODE + 1
                   # versionName: 1.0.0
             - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew bundleRelease
             - uses: r0adkll/sign-android-release@v1
