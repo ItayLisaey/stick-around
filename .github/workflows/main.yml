@@ -22,10 +22,6 @@ jobs:
             - run: npm run build
             - run: npx cap sync
             - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew bundleRelease
-    sign-and-upload:
-        needs: capacitor-build
-        runs-on: ubuntu-latest
-        steps:
             - uses: r0adkll/sign-android-release@v1
               name: Sign app APK
               id: sign_app
