@@ -26,6 +26,18 @@ jobs:
             - run: npm run build
             - run: npx cap sync
             - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew bundleRelease
+    sign-and-upload:
+        steps:
+            - uses: r0adkll/sign-android-release@v1
+              needs: capacitor-build
+              name: Sign app APK
+              id: sign_app
+              with: capacitor-build
+                releaseDirectory: android/app/build/outputs/apk/release
+                signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+                alias: ${{ secrets.ALIAS }}
+                keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+                keyPassword: ${{ secrets.KEY_PASSWORD }}
             - name: upload to google play
               uses: r0adkll/upload-google-play@v1
               with:
