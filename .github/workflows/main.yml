@@ -31,8 +31,8 @@ jobs:
         with:
           serviceAccountJson: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.stickaround.app
-          releaseFiles: app/build/outputs/bundle/release/*.aab
+          releaseFiles: android/app/build/outputs/bundle/release/*.aab
           track: beta
           inAppUpdatePriority: 0
           whatsNewDirectory: distribution/whatsnew
-          mappingFile: app/build/outputs/mapping/release/mapping.txt
+          mappingFile: android/app/build/outputs/mapping/release/mapping.txt
