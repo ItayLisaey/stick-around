@@ -25,7 +25,7 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npx cap sync
-      - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew assembleDebug && cd ..
+      - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew bundleRelease 
       - name: Upload Android APK Artifact
         uses: actions/upload-artifact@v2.3.1
         with:
