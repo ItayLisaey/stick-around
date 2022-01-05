@@ -9,13 +9,9 @@ on:
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-    # This workflow contains a single job called "build"
     capacitor-build:
-        # The type of runner that the job will run on
         runs-on: ubuntu-latest
-        # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v2
@@ -28,6 +24,7 @@ jobs:
             - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew bundleRelease
     sign-and-upload:
         needs: capacitor-build
+        runs-on: ubuntu-latest
         steps:
             - uses: r0adkll/sign-android-release@v1
               name: Sign app APK
