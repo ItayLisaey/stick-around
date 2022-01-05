@@ -34,7 +34,7 @@ jobs:
             - name: upload to google play
               uses: swootte/upload-google-play@V1.1.5
               with:
-                  serviceAccountJson: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+                  serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
                   packageName: com.stickaround.app
                   releaseFiles: android/app/build/outputs/bundle/release/*.aab
                   track: beta
