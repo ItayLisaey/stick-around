@@ -32,12 +32,14 @@ jobs:
                   keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
                   keyPassword: ${{ secrets.KEY_PASSWORD }}
             - name: upload to google play
-              uses: r0adkll/upload-google-play@v1
+              uses: swootte/upload-google-play@V1.1.5
               with:
-                  serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+                  serviceAccountJson: ${{ SERVICE_ACCOUNT_JSON }}
                   packageName: com.stickaround.app
                   releaseFiles: android/app/build/outputs/bundle/release/*.aab
                   track: beta
                   inAppUpdatePriority: 0
                   whatsNewDirectory: distribution/whatsnew
                   mappingFile: android/app/build/outputs/mapping/release/mapping.txt
+                  status: draft
+                  changesNotSentForReview: true
