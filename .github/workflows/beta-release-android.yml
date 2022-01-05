@@ -21,11 +21,15 @@ jobs:
             - run: npm test
             - run: npm run build
             - run: npx cap sync
+            - name: Expose version name
+              uses: michpohl/android-expose-version-name-action@v1.0.0
+              with:
+                  expose-version-code: 'true'
             - name: Bump version
               uses: chkfung/android-version-actions@v1.1
               with:
                   gradlePath: android/app/build.gradle # or app/build.gradle.kts
-                  # versionCode: ${{github.run_number}}
+                  versionCode: ${{ ANDROID_VERSION_CODE }} + 1
                   # versionName: 1.0.0
             - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew bundleRelease
             - uses: r0adkll/sign-android-release@v1
