@@ -12,9 +12,10 @@ on:
 jobs:
     capacitor-build:
         runs-on: ubuntu-latest
-        env: VITE_TMDB_KEY=${{ secrets.TMDB_KEY }}
-            VITE_FIRE_KEY=${{ secrets.FIRE_KEY }}
-            VITE_BACKEND=https://stick-around-backend-01-ie7sxtuaoa-uc.a.run.app/api
+        env:
+            VITE_TMDB_KEY: ${{ secrets.TMDB_KEY }}
+            VITE_FIRE_KEY: ${{ secrets.FIRE_KEY }}
+            VITE_BACKEND: https://stick-around-backend-01-ie7sxtuaoa-uc.a.run.app/api
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v2
