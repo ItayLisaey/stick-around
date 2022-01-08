@@ -13,7 +13,16 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 2rem;
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    p {
+        font-size: 1.3rem;
+        white-space: pre-line;
+    }
 
     color: c.$light;
     a,
@@ -24,10 +33,13 @@
         color: inherit;
     }
     a {
+        display: flex;
+        gap: 0.7rem;
+        align-items: center;
         border-radius: 0.2rem;
         padding: {
             block: 0.5rem;
-            inline: 1.5rem;
+            inline: 1.2rem;
         }
         background-color: c.$light;
         color: c.$dark;
@@ -40,5 +52,9 @@
             background-color: rgba($color: c.$light, $alpha: 0.9);
             color: c.$dark;
         }
+    }
+
+    .icon {
+        font-size: 2.5rem;
     }
 }
