@@ -19,6 +19,11 @@ export interface Credits {
     total: number;
 }
 
+export interface CreditsData {
+    movie: Credits;
+    vote: Vote;
+}
+
 export type creditType = 'during' | 'after';
 
 export interface Vote {

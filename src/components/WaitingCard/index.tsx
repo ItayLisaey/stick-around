@@ -1,9 +1,8 @@
 import { CircularProgress } from '@mui/material';
 import classNames from 'classnames';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Credits, creditType, Movie } from '../../types/movies.interface';
+import { CreditsData, creditType, Movie } from '../../types/movies.interface';
 import { shouldWait, waitingText } from '../../utils/credits.utils';
-import { hasVoted } from '../../utils/votes.utils';
 import classes from './waiting-card.module.scss';
 import { CreditsMark } from './CreditsMark';
 import { VoteButton } from './VoteButton';
@@ -12,9 +11,10 @@ import { TrustMessage } from './TrustMessage';
 
 export interface WaitingCardProps {
     movie: Movie;
-    credits: Credits;
+    credits: CreditsData;
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
+    reloadCredits: () => Promise<void>;
 }
 
 export const WaitingCard: React.VFC<WaitingCardProps> = ({
@@ -22,13 +22,11 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
     credits,
     open,
     setOpen,
+    reloadCredits,
 }) => {
     const [modalType, setModalType] = useState<creditType>('during');
     const [should, setShould] = useState<1 | 0 | -1>(0);
-    const [votingStatus, setVotingStatus] = useState({
-        after: true,
-        during: true,
-    });
+
     const handleClose = () => setOpen(false);
 
     function handleOpen(type: creditType) {
@@ -37,20 +35,12 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
     }
 
     useEffect(() => {
-        async function getVoteStatus() {
-            const voteStatus = await hasVoted(movie.id);
-            if (voteStatus) {
-                setVotingStatus(voteStatus);
-            } else {
-                setVotingStatus({ after: false, during: false });
-            }
-        }
-        getVoteStatus();
-    }, [open, movie]);
+        reloadCredits();
+    }, [open, movie, reloadCredits]);
 
     useEffect(() => {
-        setShould(shouldWait(credits) ?? 0);
-    }, [credits, votingStatus]);
+        setShould(shouldWait(credits.movie) ?? 0);
+    }, [credits]);
 
     if (credits) {
         return (
@@ -67,21 +57,21 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                 <div className={classes.creditsRow}>
                     <div
                         className={classNames(classes.creditsContainer, {
-                            [classes.admin]: credits.trust === 1,
+                            [classes.admin]: credits.movie.trust === 1,
                         })}
                     >
                         <span>
                             <em>During</em> the credits?
                         </span>
                         <CreditsMark
-                            count={credits.during}
-                            trust={credits.trust}
+                            count={credits.movie.during}
+                            trust={credits.movie.trust}
                         />
-                        {credits.trust !== 1 && (
+                        {credits.movie.trust !== 1 && (
                             <VoteButton
                                 onClick={handleOpen}
                                 creditType={'during'}
-                                hasVoted={votingStatus.during}
+                                hasVoted={credits.vote.during}
                             />
                         )}
                     </div>
@@ -89,26 +79,29 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                 <div className={classes.creditsRow}>
                     <div
                         className={classNames(classes.creditsContainer, {
-                            [classes.admin]: credits.trust === 1,
+                            [classes.admin]: credits.movie.trust === 1,
                         })}
                     >
                         <span>
                             <em>After</em> the credits?
                         </span>
                         <CreditsMark
-                            count={credits.after}
-                            trust={credits.trust}
+                            count={credits.movie.after}
+                            trust={credits.movie.trust}
                         />
-                        {credits.trust !== 1 && (
+                        {credits.movie.trust !== 1 && (
                             <VoteButton
                                 onClick={handleOpen}
                                 creditType={'after'}
-                                hasVoted={votingStatus.after}
+                                hasVoted={credits.vote.after}
                             />
                         )}
                     </div>
                 </div>
-                <TrustMessage trust={credits.trust} total={credits.total} />
+                <TrustMessage
+                    trust={credits.movie.trust}
+                    total={credits.movie.total}
+                />
 
                 <VotingModal
                     open={open}
@@ -116,7 +109,7 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                     creditType={modalType}
                     setOpen={setOpen}
                     movie={movie}
-                    votingStatus={votingStatus}
+                    votingStatus={credits.vote}
                 />
             </div>
         );
