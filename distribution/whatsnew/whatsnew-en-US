@@ -1,1 +1,5 @@
-test
+- More information about voting results.
+- Added "Cerified" votes
+- Better caching and loading for movie posters.
+- Reduced loading all through the app.
+- Posting votes in now faster, more secure (and better at preventing spam).
