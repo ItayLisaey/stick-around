@@ -2,9 +2,10 @@ import { faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Modal } from '@mui/material';
 import { logEvent } from 'firebase/analytics';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { handleVoteAuth } from '../../../api/backend/movies';
+import { Dispatch, SetStateAction, useContext } from 'react';
+import { fireVote } from '../../../api/backend/movies';
 import { analytics } from '../../../App';
+import { DeviceContext } from '../../../context/device.context';
 import theme from '../../../theme/theme';
 import { Movie } from '../../../types/movies.interface';
 import classes from './voting-modal.module.scss';
@@ -29,8 +30,6 @@ export const VotingModal: React.VFC<VotingModalProps> = ({
     movie,
     votingStatus,
 }) => {
-    const [voted, setVoted] = useState(false);
-
     const question = () => {
         if (creditType === 'after') {
             return 'Is there an after credits scene?';
@@ -39,11 +38,17 @@ export const VotingModal: React.VFC<VotingModalProps> = ({
         }
     };
 
+    const { deviceID } = useContext(DeviceContext);
+
     async function handleVote(boolean: boolean) {
-        if (!votingStatus[creditType]) {
+        if (deviceID) {
             logEvent(analytics, 'vote', { movie: movie.title, vote: boolean });
-            setVoted(true);
-            const voteTry = await handleVoteAuth(movie.id, creditType, boolean);
+            const voteTry = await fireVote(
+                movie.id,
+                creditType,
+                boolean,
+                deviceID.uuid
+            );
             if (!voteTry) {
                 console.error('Voting error');
                 logEvent(analytics, 'vote-success', { success: false });

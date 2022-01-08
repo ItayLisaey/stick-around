@@ -1,12 +1,13 @@
 import { CircularProgress, Zoom } from '@mui/material';
 import { logEvent } from 'firebase/analytics';
-import { useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { getMovieCredits } from '../../api/backend/movies';
 import { getSingleMovie } from '../../api/tmdb/singleMovie';
 import { analytics } from '../../App';
 import { MovieCard } from '../../components/MovieCard';
 import { WaitingCard } from '../../components/WaitingCard';
-import { Credits, Movie } from '../../types/movies.interface';
+import { DeviceContext } from '../../context/device.context';
+import { CreditsData, Movie } from '../../types/movies.interface';
 import classes from './movie-page.module.scss';
 
 export interface MoviePageProps {
@@ -15,10 +16,11 @@ export interface MoviePageProps {
 
 export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
     const [movie, setMovie] = useState<Movie>();
-    const [credits, setCredits] = useState<Credits>();
+    const [credits, setCredits] = useState<CreditsData>();
     const [open, setOpen] = useState(false);
-
     const [waitingCardLoaded, setWaitingCardLoaded] = useState(false);
+
+    const { deviceID } = useContext(DeviceContext);
 
     useEffect(() => {
         const movieId = parseInt(id);
@@ -31,8 +33,10 @@ export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
     useEffect(() => {
         const movieId = parseInt(id);
         async function getCredits() {
-            const c = await getMovieCredits(movieId);
-            if (c) setCredits(c);
+            if (deviceID) {
+                const c = await getMovieCredits(movieId, deviceID.uuid);
+                if (c) setCredits(c);
+            }
         }
 
         if (movie) {
@@ -56,6 +60,14 @@ export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
         }
     }, [movie]);
 
+    const reloadCredits = useCallback(async () => {
+        if (deviceID) {
+            const movieId = parseInt(id);
+            const c = await getMovieCredits(movieId, deviceID.uuid);
+            if (c) setCredits(c);
+        }
+    }, [id, deviceID]);
+
     if (movie) {
         return (
             <div className={classes.pageContainer}>
@@ -70,14 +82,15 @@ export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
                             <p>{movie.overview}</p>
                         </div>
                     </div>
-                    {waitingCardLoaded ? (
+                    {waitingCardLoaded && credits ? (
                         <Zoom in={waitingCardLoaded}>
                             <div className={classes.waitingContainer}>
                                 <WaitingCard
-                                    credits={credits!}
+                                    credits={credits}
                                     movie={movie}
                                     open={open}
                                     setOpen={setOpen}
+                                    reloadCredits={reloadCredits}
                                 />
                             </div>
                         </Zoom>

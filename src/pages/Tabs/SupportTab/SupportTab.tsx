@@ -1,3 +1,6 @@
+import { faPaypal } from '@fortawesome/free-brands-svg-icons';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { logEvent } from 'firebase/analytics';
 import { useEffect } from 'react';
 import { analytics } from '../../../App';
@@ -13,18 +16,12 @@ export const SupportTab: React.VFC<DonateTabProps> = () => {
 
     return (
         <div className={classes.root}>
-            <h1>hey</h1>
-            <h2>consider donating</h2>
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Provident magni soluta excepturi consectetur iusto minima
-                accusamus et repellendus voluptas, distinctio libero numquam ut
-                voluptatum nulla vel iure dolor nemo eius a ad nesciunt ipsa
-                incidunt. Ipsum quibusdam necessitatibus tempora neque nesciunt
-                possimus illum, doloremque ipsam?
-            </p>
+            <FontAwesomeIcon icon={faHeart} className={classes.icon} />
+            <h1>{DONATE_CONST.title}</h1>
+            <p>{DONATE_CONST.para}</p>
             <a href={DONATE_CONST.link} target={'_blank'} rel="noreferrer">
-                donate
+                <FontAwesomeIcon icon={faPaypal} />
+                <span>Donate</span>
             </a>
         </div>
     );

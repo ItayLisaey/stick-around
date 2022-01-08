@@ -8,6 +8,7 @@ import { getFirestore } from '@firebase/firestore';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { Home } from './pages/Home';
 import theme from './theme/theme';
+import { DeviceProvider } from './context/device.context';
 
 const firebaseKey = import.meta.env.VITE_FIRE_KEY as string;
 
@@ -38,11 +39,13 @@ function App() {
 
     return (
         <div className="App">
-            <ThemeProvider theme={theme}>
-                <Router>
-                    <Home />
-                </Router>
-            </ThemeProvider>
+            <DeviceProvider>
+                <ThemeProvider theme={theme}>
+                    <Router>
+                        <Home />
+                    </Router>
+                </ThemeProvider>
+            </DeviceProvider>
         </div>
     );
 }
