@@ -12,7 +12,7 @@ export interface MovieCardProps {
 }
 
 export const MovieCard: React.VFC<MovieCardProps> = ({ movie }) => {
-    const [loaded, setLoaded] = useState(true);
+    const [loaded, setLoaded] = useState(false);
     const [imagePath, setImagePath] = useState(placeholder);
 
     useEffect(() => {
@@ -20,6 +20,7 @@ export const MovieCard: React.VFC<MovieCardProps> = ({ movie }) => {
             const res = await fetch(posterImageUrlHD(movie.posterPath));
             if (res.ok) {
                 setImagePath(res.url);
+                setLoaded(true);
             }
         };
         fetchImage();

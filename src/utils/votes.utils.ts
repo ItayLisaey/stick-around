@@ -7,7 +7,7 @@ export async function registerVote(id: number, type: creditType) {
     if (movieVote.value) {
         const voteStatus: { after: boolean; during: boolean } =
             movieVote.value && JSON.parse(movieVote.value);
-        const newStatus = (voteStatus[type] = true);
+        // const newStatus = (voteStatus[type] = true);
         await Storage.set({
             key: `${id}`,
             value: JSON.stringify(voteStatus, null, 2),
@@ -17,7 +17,7 @@ export async function registerVote(id: number, type: creditType) {
             type === 'after'
                 ? { after: true, during: false }
                 : { after: false, during: true };
-        const vote = await Storage.set({
+        await Storage.set({
             key: `${id}`,
             value: JSON.stringify(newStatus, null, 2),
         });

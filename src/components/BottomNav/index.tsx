@@ -59,7 +59,7 @@ export const BottomNav: React.VFC<BottomNavProps> = () => {
                     className={classNames(classes.navBtn, {
                         [classes.selected]: selected === tab.location,
                     })}
-                    onClick={(e) => handleClick(tab.location)}
+                    onClick={() => handleClick(tab.location)}
                 >
                     <div>
                         <FontAwesomeIcon icon={tab.icon} />

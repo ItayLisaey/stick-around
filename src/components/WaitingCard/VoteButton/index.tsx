@@ -15,12 +15,6 @@ export const VoteButton: React.VFC<VoteButtonProps> = ({
     creditType,
     hasVoted,
 }) => {
-    const handleClick = () => {
-        if (!hasVoted) {
-            onClick(creditType);
-        }
-    };
-
     const text = !hasVoted ? 'voted' : 'vote';
 
     return (
@@ -29,7 +23,7 @@ export const VoteButton: React.VFC<VoteButtonProps> = ({
             className={classNames(classes.voteContainer, {
                 [classes.voted]: !hasVoted,
             })}
-            onClick={(e) => onClick(creditType)}
+            onClick={() => onClick(creditType)}
         >
             <HowToVote />
             <span>{text.toUpperCase()}</span>

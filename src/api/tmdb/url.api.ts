@@ -22,7 +22,6 @@ export function apiUrl(
     const mainPath = pathIndex(index);
 
     let params = '';
-    const additionalParams = '';
     if (parameters) {
         params = `&${parameters.join('&')}`;
     }

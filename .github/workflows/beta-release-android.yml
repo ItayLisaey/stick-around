@@ -24,12 +24,13 @@ jobs:
             - run: npm install
             - run: npm test
             - run: npm run build
-            - run: npx cap sync
+            - run: npx cap sync android
             - name: Bump version
               uses: chkfung/android-version-actions@v1.1
               with:
                   gradlePath: android/app/build.gradle # or app/build.gradle.kts
                   versionCode: ${{github.run_number}} # versionName: 1.0.0
+                  versionName: 1.1.2
             - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew bundleRelease
             - uses: r0adkll/sign-android-release@v1
               name: Sign app APK

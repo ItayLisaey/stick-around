@@ -16,10 +16,6 @@ export interface VotingModalProps {
     creditType: 'during' | 'after';
     setOpen: Dispatch<SetStateAction<boolean>>;
     movie: Movie;
-    votingStatus: {
-        after: boolean;
-        during: boolean;
-    };
 }
 
 export const VotingModal: React.VFC<VotingModalProps> = ({
@@ -28,7 +24,6 @@ export const VotingModal: React.VFC<VotingModalProps> = ({
     creditType,
     setOpen,
     movie,
-    votingStatus,
 }) => {
     const question = () => {
         if (creditType === 'after') {
@@ -67,7 +62,7 @@ export const VotingModal: React.VFC<VotingModalProps> = ({
                     <Button
                         variant="contained"
                         color="success"
-                        onClick={(e) => handleVote(true)}
+                        onClick={() => handleVote(true)}
                         disableElevation
                     >
                         <FontAwesomeIcon
@@ -78,7 +73,7 @@ export const VotingModal: React.VFC<VotingModalProps> = ({
                     <Button
                         variant="contained"
                         color="error"
-                        onClick={(e) => handleVote(false)}
+                        onClick={() => handleVote(false)}
                         disableElevation
                     >
                         <FontAwesomeIcon

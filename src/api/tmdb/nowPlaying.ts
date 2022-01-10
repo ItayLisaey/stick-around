@@ -12,13 +12,11 @@ export async function getNowPlaying(pageNumber: number) {
         );
 
     try {
-        const movies = await fetch(url(pageNumber))
-            .then((res) => res.json())
-            .catch((err) => {
-                throw Error('Error fetching movies');
-            });
+        const res = await fetch(url(pageNumber));
 
-        const currentMovies = movies.results.map(
+        const data = await res.json();
+
+        const currentMovies = data.results.map(
             (movie: {
                 id: any;
                 title: any;
