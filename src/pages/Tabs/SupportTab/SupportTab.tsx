@@ -14,12 +14,22 @@ export const SupportTab: React.VFC<DonateTabProps> = () => {
         logEvent(analytics, 'page_view', { page_title: 'support' });
     }, []);
 
+    const logDonate = () => {
+        logEvent(analytics, 'donate');
+    };
+
     return (
         <div className={classes.root}>
             <FontAwesomeIcon icon={faHeart} className={classes.icon} />
             <h1>{DONATE_CONST.title}</h1>
             <p>{DONATE_CONST.para}</p>
-            <a href={DONATE_CONST.link} target={'_blank'} rel="noreferrer">
+            <a
+                href={DONATE_CONST.link}
+                target={'_blank'}
+                rel="noreferrer"
+                className={classes.donateBtn}
+                onClick={logDonate}
+            >
                 <FontAwesomeIcon icon={faPaypal} />
                 <span>Donate</span>
             </a>
