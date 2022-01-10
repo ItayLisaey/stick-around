@@ -30,6 +30,7 @@ jobs:
               with:
                   gradlePath: android/app/build.gradle # or app/build.gradle.kts
                   versionCode: ${{github.run_number}} # versionName: 1.0.0
+                  versionName: 1.1.2
             - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew bundleRelease
             - uses: r0adkll/sign-android-release@v1
               name: Sign app APK
