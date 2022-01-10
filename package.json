@@ -6,6 +6,7 @@
         "build": "tsc && eslint src --fix && vite build",
         "serve": "vite preview",
         "resources": "capacitor-resources -p android,ios",
+        "open:android": "npm run build && npx cap sync android && npx cap open android",
         "open:ios": "npm run build && npx cap sync ios && npx cap open ios"
     },
     "dependencies": {

@@ -109,7 +109,6 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                     creditType={modalType}
                     setOpen={setOpen}
                     movie={movie}
-                    votingStatus={credits.vote}
                 />
             </div>
         );

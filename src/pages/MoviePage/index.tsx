@@ -42,7 +42,7 @@ export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
         if (movie) {
             getCredits();
         }
-    }, [open, movie, id]);
+    }, [open, movie, id, deviceID]);
 
     useEffect(() => {
         if (credits) {
