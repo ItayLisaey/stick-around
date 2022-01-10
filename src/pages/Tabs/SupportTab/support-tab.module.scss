@@ -25,36 +25,43 @@
     }
 
     color: c.$light;
-    a,
-    a:hover,
-    a:focus,
-    a:active {
-        text-decoration: none;
-        color: inherit;
-    }
-    a {
-        display: flex;
-        gap: 0.7rem;
-        align-items: center;
-        border-radius: 0.2rem;
-        padding: {
-            block: 0.5rem;
-            inline: 1.2rem;
-        }
-        background-color: c.$light;
-        color: c.$dark;
-        transition: all 0.2s ease;
-        &:hover {
-            background-color: rgba($color: c.$light, $alpha: 0.8);
-            color: c.$dark;
-        }
-        &:active {
-            background-color: rgba($color: c.$light, $alpha: 0.9);
-            color: c.$dark;
-        }
-    }
 
     .icon {
         font-size: 2.5rem;
+    }
+}
+
+.donateBtn {
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+    border-radius: 0.2rem;
+    padding: {
+        block: 0.5rem;
+        inline: 1.2rem;
+    }
+    background-color: c.$light;
+    color: c.$dark !important;
+    transition: all 0.2s ease;
+    &:hover {
+        background-color: rgba($color: c.$light, $alpha: 0.8);
+        color: c.$dark;
+    }
+    &:active {
+        background-color: rgba($color: c.$light, $alpha: 0.9);
+        color: c.$dark;
+    }
+
+    span {
+        font-family: 'Assistant', sans-serif;
+        font-weight: 700;
     }
 }
