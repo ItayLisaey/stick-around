@@ -3,8 +3,6 @@ name: Release App on Google Play - BETA
 on:
     push:
         branches: [next]
-    pull_request:
-        branches: [next]
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
