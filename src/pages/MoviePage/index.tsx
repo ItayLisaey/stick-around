@@ -1,6 +1,6 @@
 import { CircularProgress, Zoom } from '@mui/material';
 import { logEvent } from 'firebase/analytics';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { getMovieCredits } from '../../api/backend/movies';
 import { getSingleMovie } from '../../api/tmdb/singleMovie';
 import { analytics } from '../../App';
@@ -18,7 +18,7 @@ export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
     const [movie, setMovie] = useState<Movie>();
     const [credits, setCredits] = useState<CreditsData>();
     const [open, setOpen] = useState(false);
-    const [waitingCardLoaded, setWaitingCardLoaded] = useState(false);
+    // const [waitingCardLoaded, setWaitingCardLoaded] = useState(false);
 
     const { deviceID } = useContext(DeviceContext);
 
@@ -44,12 +44,9 @@ export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
         }
     }, [open, movie, id, deviceID]);
 
-    useEffect(() => {
-        if (credits) {
-            setWaitingCardLoaded(true);
-        } else {
-            setWaitingCardLoaded(false);
-        }
+    const loaded = useMemo(() => {
+        if (credits) return true;
+        return false;
     }, [credits]);
 
     useEffect(() => {
@@ -82,8 +79,8 @@ export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
                             <p>{movie.overview}</p>
                         </div>
                     </div>
-                    {waitingCardLoaded && credits ? (
-                        <Zoom in={waitingCardLoaded}>
+                    {credits ? (
+                        <Zoom in={loaded}>
                             <div className={classes.waitingContainer}>
                                 <WaitingCard
                                     credits={credits}
