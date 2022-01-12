@@ -1,10 +1,8 @@
 name: Release App on Google Play - PROD
 
 on:
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
+    release:
+        types: [created]
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
@@ -12,6 +10,10 @@ on:
 jobs:
     capacitor-build:
         runs-on: ubuntu-latest
+        env:
+            VITE_TMDB_KEY: ${{ secrets.TMDB_KEY }}
+            VITE_FIRE_KEY: ${{ secrets.FIRE_KEY }}
+            VITE_BACKEND: https://stick-around-backend-01-ie7sxtuaoa-uc.a.run.app/api
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v2
@@ -20,12 +22,13 @@ jobs:
             - run: npm install
             - run: npm test
             - run: npm run build
-            - run: npx cap sync
+            - run: npx cap sync android
             - name: Bump version
               uses: chkfung/android-version-actions@v1.1
               with:
                   gradlePath: android/app/build.gradle # or app/build.gradle.kts
                   versionCode: ${{github.run_number}} # versionName: 1.0.0
+                  versionName: 1.1.3
             - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew bundleRelease
             - uses: r0adkll/sign-android-release@v1
               name: Sign app APK
