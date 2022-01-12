@@ -1,8 +1,8 @@
 name: Release App on Google Play - BETA
 
 on:
-    push:
-        branches: [next]
+    release:
+        types: [prereleased]
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:

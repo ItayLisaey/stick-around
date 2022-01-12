@@ -2,7 +2,7 @@ name: Release App on Google Play - PROD
 
 on:
     release:
-        types: [created]
+        types: [released]
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
