@@ -1,10 +1,10 @@
 import { useHistory } from 'react-router';
-import { posterImageUrlHD } from '../../api/images.api';
+import { posterImageUrlHD } from '../../api/tmdb/images.api';
 import { Movie } from '../../types/movies.interface';
 import classes from './movie-bar.module.scss';
 
 export interface MovieBarProps {
-    movie: Movie
+    movie: Movie;
 }
 
 export const MovieBar: React.VFC<MovieBarProps> = ({ movie }) => {

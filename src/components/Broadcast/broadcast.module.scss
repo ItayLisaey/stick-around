@@ -1,0 +1,40 @@
+@use '../../theme/colors' as c;
+
+.root {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba($color: c.$dark, $alpha: 0.95);
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: {
+        block: 2rem;
+        inline: 2rem;
+    }
+    color: c.$light;
+    overflow-y: auto;
+
+    button {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        color: c.$light;
+        width: min-content;
+        border: none;
+        background-color: transparent;
+        font-size: 1.7rem;
+        cursor: pointer;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin: 0;
+        word-wrap: break-word;
+    }
+    p {
+        font-size: 1.3rem;
+    }
+}

@@ -6,12 +6,14 @@
         "build": "tsc && eslint src --fix && vite build",
         "serve": "vite preview",
         "resources": "capacitor-resources -p android,ios",
+        "open:android": "npm run build && npx cap sync android && npx cap open android",
         "open:ios": "npm run build && npx cap sync ios && npx cap open ios"
     },
     "dependencies": {
         "@capacitor/android": "^3.2.4",
         "@capacitor/app": "^1.0.5",
         "@capacitor/core": "^3.2.4",
+        "@capacitor/device": "^1.1.1",
         "@capacitor/haptics": "^1.1.2",
         "@capacitor/keyboard": "^1.1.2",
         "@capacitor/splash-screen": "^1.1.5",

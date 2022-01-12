@@ -1,4 +1,3 @@
-
 export interface Movie {
     id: number;
     title: string;
@@ -7,21 +6,29 @@ export interface Movie {
     posterPath: string;
 }
 
-
 export interface SubCredits {
-    votes: number,
-    boolean: boolean,
-    fromAPI: boolean
+    votes: number;
+    boolean: boolean;
+    fromAPI: boolean;
 }
 
 export interface Credits {
-    during: SubCredits,
-    after: SubCredits
+    during: number;
+    after: number;
+    trust: Trust;
+    total: number;
 }
 
-export type creditType = 'during' | 'after'
+export interface CreditsData {
+    movie: Credits;
+    vote: Vote;
+}
+
+export type creditType = 'during' | 'after';
 
 export interface Vote {
-    during: 1 | 0 | -1,
-    after: 1 | 0 | -1
+    during: boolean;
+    after: boolean;
 }
+
+export type Trust = 1 | 2 | 3 | 4;

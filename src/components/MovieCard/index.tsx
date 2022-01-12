@@ -1,34 +1,36 @@
 import { Grow } from '@mui/material';
-import { useState } from 'react';
-import { useHistory } from 'react-router';
-import { posterImageUrlHD } from '../../api/images.api';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { posterImageUrlHD } from '../../api/tmdb/images.api';
+import placeholder from '../../public/images/MoviePosterPlaceholder.png';
 import { Movie } from '../../types/movies.interface';
 import classes from './movie-card.module.scss';
 
 export interface MovieCardProps {
-    movie: Movie
-    dummy?: boolean
+    movie: Movie;
+    dummy?: boolean;
 }
 
-export const MovieCard: React.VFC<MovieCardProps> = ({ movie, dummy }) => {
-    const [loaded, setLoaded] = useState(true);
-    const history = useHistory();
+export const MovieCard: React.VFC<MovieCardProps> = ({ movie }) => {
+    const [loaded, setLoaded] = useState(false);
+    const [imagePath, setImagePath] = useState(placeholder);
 
-    function handleClick() {
-        if (!dummy) {
-            history.push(`/movies/${movie.id}`);
-        }
-    }
+    useEffect(() => {
+        const fetchImage = async () => {
+            const res = await fetch(posterImageUrlHD(movie.posterPath));
+            if (res.ok) {
+                setImagePath(res.url);
+                setLoaded(true);
+            }
+        };
+        fetchImage();
+    }, [movie.posterPath]);
 
     return (
-        <div className={classes.card} onClick={handleClick}>
+        <Link className={classes.card} to={`/movies/${movie.id}`}>
             <Grow in={loaded}>
-                <img
-                    onClick={handleClick}
-                    src={posterImageUrlHD(movie.posterPath)}
-                    alt={`${movie.title} poster image`}
-                />
+                <img src={imagePath} alt={`${movie.title} poster image`} />
             </Grow>
-        </div>
+        </Link>
     );
 };

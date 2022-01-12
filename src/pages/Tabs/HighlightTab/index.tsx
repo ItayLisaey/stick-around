@@ -1,10 +1,12 @@
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CircularProgress, Fade } from '@mui/material';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { logEvent } from 'firebase/analytics';
 import { AppBar } from '../../../components/AppBar';
 import { MovieCard } from '../../../components/MovieCard';
 import useNowPlaying from '../../../hooks/UseNowPlaying';
+import { analytics } from '../../../App';
 import classes from './highlight-tab.module.scss';
 
 export interface HighlightTabProps {}
@@ -29,6 +31,16 @@ export const HighlightTab: React.VFC<HighlightTabProps> = () => {
         },
         [loading, hasMore]
     );
+
+    useEffect(() => {
+        logEvent(analytics, 'page_view', { page_title: 'in-theathers' });
+    }, []);
+
+    useEffect(() => {
+        if (page > 1) {
+            logEvent(analytics, 'loaded_more');
+        }
+    }, [page]);
 
     return (
         <div className={classes.nowPlayingContainer}>

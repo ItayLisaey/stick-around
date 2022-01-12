@@ -1,7 +1,9 @@
 import { faFilm, faInbox, faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { logEvent } from 'firebase/analytics';
 import { useEffect, useState } from 'react';
-import { getSearchResults } from '../../../api/search.api';
+import { getSearchResults } from '../../../api/tmdb/search.api';
+import { analytics } from '../../../App';
 import { MovieBar } from '../../../components/MovieBar';
 import { Movie } from '../../../types/movies.interface';
 import classes from './search-tab.module.scss';
@@ -20,6 +22,10 @@ export const SearchTab: React.VFC<SearchTabProps> = () => {
             getMovies();
         }
     }, [query]);
+
+    useEffect(() => {
+        logEvent(analytics, 'page_view', { page_title: 'search' });
+    }, []);
 
     function noResults() {
         if (query === '') {
