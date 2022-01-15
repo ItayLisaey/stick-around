@@ -34,9 +34,11 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
         setOpen(true);
     }
 
-    useEffect(() => {
-        reloadCredits();
-    }, [open, movie, reloadCredits]);
+    // useEffect(() => {
+    //     console.log('reloaded');
+
+    //     reloadCredits();
+    // }, [open, movie, reloadCredits]);
 
     useEffect(() => {
         setShould(shouldWait(credits.movie) ?? 0);
@@ -109,6 +111,7 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                     creditType={modalType}
                     setOpen={setOpen}
                     movie={movie}
+                    reloadCredits={reloadCredits}
                 />
             </div>
         );

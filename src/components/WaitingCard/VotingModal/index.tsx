@@ -16,6 +16,7 @@ export interface VotingModalProps {
     creditType: 'during' | 'after';
     setOpen: Dispatch<SetStateAction<boolean>>;
     movie: Movie;
+    reloadCredits: () => Promise<void>;
 }
 
 export const VotingModal: React.VFC<VotingModalProps> = ({
@@ -24,6 +25,7 @@ export const VotingModal: React.VFC<VotingModalProps> = ({
     creditType,
     setOpen,
     movie,
+    reloadCredits,
 }) => {
     const question = () => {
         if (creditType === 'after') {
@@ -49,6 +51,7 @@ export const VotingModal: React.VFC<VotingModalProps> = ({
                 logEvent(analytics, 'vote-success', { success: false });
             } else {
                 logEvent(analytics, 'vote-success', { success: true });
+                reloadCredits();
                 setOpen(false);
             }
         }
