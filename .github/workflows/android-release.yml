@@ -27,15 +27,11 @@ jobs:
             - run: npm test
             - run: npm run build
             - run: npx cap sync android
-    android-sign:
-        needs: [capacitor-build]
-        runs-on: ubuntu-latest
-        steps:
             - name: Bump version
               uses: chkfung/android-version-actions@v1.1
               with:
                   gradlePath: android/app/build.gradle # or app/build.gradle.kts
-                  versionCode: ${{github.run_number}} # versionName: 1.0.0
+                  versionCode: (${{ github.run_number }}+30) # versionName: 1.0.0
                   versionName: ${{ steps.releaseTag.outputs.release }}
             - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew bundleRelease
             - uses: r0adkll/sign-android-release@v1
@@ -47,10 +43,6 @@ jobs:
                   alias: ${{ secrets.ALIAS }}
                   keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
                   keyPassword: ${{ secrets.KEY_PASSWORD }}
-    google-play-publish:
-        needs: [capacitor-build, android-sign]
-        runs-on: ubuntu-latest
-        steps:
             - name: upload to google play on beta
               if: ${{ github.ref == 'refs/heads/next' }}
               uses: swootte/upload-google-play@V1.1.5
