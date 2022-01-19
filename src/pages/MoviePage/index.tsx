@@ -39,10 +39,8 @@ export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
             }
         }
 
-        if (movie) {
-            getCredits();
-        }
-    }, [open, movie, id, deviceID]);
+        getCredits();
+    }, [deviceID, id]);
 
     const loaded = useMemo(() => {
         if (credits) return true;
@@ -63,7 +61,7 @@ export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
             const c = await getMovieCredits(movieId, deviceID.uuid);
             if (c) setCredits(c);
         }
-    }, [id, deviceID]);
+    }, [deviceID]);
 
     if (movie) {
         return (
