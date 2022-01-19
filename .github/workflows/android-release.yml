@@ -1,8 +1,8 @@
-name: Release App on Google Play - BETA
+name: Release App on Google Play
 
 on:
     release:
-        types: [prereleased]
+        types: [published]
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
@@ -27,6 +27,10 @@ jobs:
             - run: npm test
             - run: npm run build
             - run: npx cap sync android
+    android-sign:
+        needs: [capacitor-build]
+        runs-on: ubuntu-latest
+        steps:
             - name: Bump version
               uses: chkfung/android-version-actions@v1.1
               with:
@@ -43,7 +47,12 @@ jobs:
                   alias: ${{ secrets.ALIAS }}
                   keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
                   keyPassword: ${{ secrets.KEY_PASSWORD }}
-            - name: upload to google play
+    google-play-publish:
+        needs: [capacitor-build, android-sign]
+        runs-on: ubuntu-latest
+        steps:
+            - name: upload to google play on beta
+              if: ${{ github.ref == 'refs/heads/next' }}
               uses: swootte/upload-google-play@V1.1.5
               with:
                   serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
@@ -53,5 +62,18 @@ jobs:
                   inAppUpdatePriority: 0
                   whatsNewDirectory: distribution/whatsnew
                   mappingFile: android/app/build/outputs/mapping/release/mapping.txt
-                  status: completed
+                  status: draft
+                  changesNotSentForReview: false
+            - name: upload to google play on production
+              if: ${{ github.ref == 'refs/heads/main' }}
+              uses: swootte/upload-google-play@V1.1.5
+              with:
+                  serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+                  packageName: com.stickaround.app
+                  releaseFiles: android/app/build/outputs/bundle/release/*.aab
+                  track: production
+                  inAppUpdatePriority: 0
+                  whatsNewDirectory: distribution/whatsnew
+                  mappingFile: android/app/build/outputs/mapping/release/mapping.txt
+                  status: draft
                   changesNotSentForReview: false
