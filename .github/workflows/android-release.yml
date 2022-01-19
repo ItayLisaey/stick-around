@@ -31,17 +31,11 @@ jobs:
         needs: [capacitor-build]
         runs-on: ubuntu-latest
         steps:
-            - name: run number with offset
-              env:
-                    NUM: ${{ github.run_number }}
-              run: |
-                    echo ::set-env name=GITHUB_RUN_NUMBER_WITH_OFFSET::$(($NUM+30))
-            - run: echo $GITHUB_RUN_NUMBER_WITH_OFFSET
             - name: Bump version
               uses: chkfung/android-version-actions@v1.1
               with:
                   gradlePath: android/app/build.gradle # or app/build.gradle.kts
-                  versionCode: $GITHUB_RUN_NUMBER_WITH_OFFSET # versionName: 1.0.0
+                  versionCode: (${{ github.run_number }}+30) # versionName: 1.0.0
                   versionName: ${{ steps.releaseTag.outputs.release }}
             - run: sudo npx cap copy android && cd android && chmod +x gradlew && ./gradlew bundleRelease
             - uses: r0adkll/sign-android-release@v1
