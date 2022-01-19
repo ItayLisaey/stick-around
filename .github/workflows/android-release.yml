@@ -27,10 +27,6 @@ jobs:
             - run: npm test
             - run: npm run build
             - run: npx cap sync android
-    android-sign:
-        needs: [capacitor-build]
-        runs-on: ubuntu-latest
-        steps:
             - name: Bump version
               uses: chkfung/android-version-actions@v1.1
               with:
@@ -48,7 +44,7 @@ jobs:
                   keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
                   keyPassword: ${{ secrets.KEY_PASSWORD }}
     google-play-publish:
-        needs: [capacitor-build, android-sign]
+        needs: [capacitor-build]
         runs-on: ubuntu-latest
         steps:
             - name: upload to google play on beta
