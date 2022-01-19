@@ -32,9 +32,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: run number with offset
-                env:
+              env:
                     NUM: ${{ github.run_number }}
-                run: |
+              run: |
                     echo ::set-env name=GITHUB_RUN_NUMBER_WITH_OFFSET::$(($NUM+30))
             - run: echo $GITHUB_RUN_NUMBER_WITH_OFFSET
             - name: Bump version
