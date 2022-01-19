@@ -43,10 +43,6 @@ jobs:
                   alias: ${{ secrets.ALIAS }}
                   keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
                   keyPassword: ${{ secrets.KEY_PASSWORD }}
-    google-play-publish:
-        needs: [capacitor-build]
-        runs-on: ubuntu-latest
-        steps:
             - name: upload to google play on beta
               if: ${{ github.ref == 'refs/heads/next' }}
               uses: swootte/upload-google-play@V1.1.5
