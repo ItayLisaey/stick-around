@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Dispatch, SetStateAction, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { shouldWait, waitingText } from '../../utils/credits.utils';
 import classes from './waiting-card.module.scss';
 import { CreditsMark } from './CreditsMark';
@@ -9,28 +9,30 @@ import { BaseMovie } from '../../models/movie.model';
 import { movieService } from '../../services/movies.service';
 import { useQuery } from 'react-query';
 import { StatusIndicator } from '../StatusIndicator';
-import { emptyCreditsData } from '../../constants/credits.constants';
+import { VotingModal } from './VotingModal';
+import { useDialog } from '../../hooks/useDialog';
 
 export interface WaitingCardProps {
     movie: BaseMovie;
-    open: boolean;
-    setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export const WaitingCard: React.VFC<WaitingCardProps> = ({
-    movie,
-    open,
-    setOpen,
-}) => {
-    const { data: credits, status: creditsStatus } = useQuery(
-        ['credits', movie.id],
-        () => movieService.credits(movie.id)
-    );
+export const WaitingCard: React.VFC<WaitingCardProps> = ({ movie }) => {
+    const {
+        data: credits,
+        status: creditsStatus,
+        isFetching,
+    } = useQuery(['credits', movie.id], () => movieService.credits(movie.id), {
+        cacheTime: 0,
+    });
 
-    const handleClose = () => setOpen(false);
+    const { instance, actions } = useDialog();
+    const [modalType, setModalType] = useState<'during' | 'after'>('during');
 
-    function handleOpen() {
-        setOpen(true);
+    function handleOpen(type: 'during' | 'after') {
+        return () => {
+            setModalType(type);
+            actions.open();
+        };
     }
 
     const should = useMemo(() => shouldWait(credits?.movie) ?? 0, [credits]);
@@ -39,6 +41,7 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
 
     const loading = useMemo(() => {
         if (creditsStatus === 'loading') return true;
+
         return false;
     }, [creditsStatus]);
 
@@ -80,9 +83,9 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                                 />
                                 {credits.movie.trust !== 1 && (
                                     <VoteButton
-                                        onClick={handleOpen}
+                                        onClick={handleOpen(type)}
                                         creditType={type}
-                                        hasVoted={credits.vote.during}
+                                        hasVoted={credits.vote[type]}
                                     />
                                 )}
                             </div>
@@ -93,13 +96,12 @@ export const WaitingCard: React.VFC<WaitingCardProps> = ({
                         total={credits.movie.total}
                     />
 
-                    {/* <VotingModal
-                open={open}
-                onClose={handleClose}
-                creditType={modalType}
-                setOpen={setOpen}
-                movie={movie}
-            /> */}
+                    <VotingModal
+                        {...instance}
+                        actions={actions}
+                        type={modalType}
+                        movie={movie}
+                    />
                 </div>
             )}
         </StatusIndicator>

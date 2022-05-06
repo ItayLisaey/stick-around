@@ -10,6 +10,7 @@ import { Home } from './pages/Home';
 import theme from './theme/theme';
 import { DeviceProvider } from './context/device.context';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { HealthCheck } from './components/HealthCheck';
 
 const firebaseKey = import.meta.env.VITE_FIRE_KEY as string;
 
@@ -46,7 +47,9 @@ function App() {
                 <DeviceProvider>
                     <ThemeProvider theme={theme}>
                         <Router>
-                            <Home />
+                            <HealthCheck>
+                                <Home />
+                            </HealthCheck>
                         </Router>
                     </ThemeProvider>
                 </DeviceProvider>

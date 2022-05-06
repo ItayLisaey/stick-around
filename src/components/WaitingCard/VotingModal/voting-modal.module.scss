@@ -1,23 +1,29 @@
 @use "../../../theme/colors" as c;
 
-.modalBox {
+.dialog {
+  *[role="dialog"] {
+    border-radius: 0.4rem;
+  }
+
+}
+
+.container {
   background-color: c.$dark;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 65%;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
   border-radius: 0.4rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding: {
     inline: 2rem;
     block: 2rem;
   }
   font-family: "Assistant", sans-serif;
   span {
+    text-align: center;
     font-size: 1.8rem;
     font-weight: 600;
     line-height: 2rem;

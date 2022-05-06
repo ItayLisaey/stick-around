@@ -8,6 +8,8 @@ import { TMDBInstance } from './utils/tmdb.service';
 
 class MovieService {
     service_prefix = 'movies';
+    vote_prefix = 'vote';
+
     tmdb_prefix = 'movie';
 
     async findOne(movieId: number): Promise<BaseMovie> {
@@ -43,13 +45,13 @@ class MovieService {
     async vote(movieId: number, type: creditType, content: boolean) {
         try {
             const payload = {
-                vote: content,
+                value: content,
                 type: type,
             };
             const res = await (
                 await ServiceInstance()
             ).post<ServerResponse<{}>>(
-                this.service_prefix + '/' + movieId,
+                this.vote_prefix + '/' + movieId,
                 payload
             );
 

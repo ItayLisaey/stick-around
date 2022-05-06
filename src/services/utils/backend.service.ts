@@ -17,17 +17,17 @@ const authKey = () => {
     return key as string;
 };
 
-const axiosInstance = axios.create({
+export const backendAxiosInstance = axios.create({
     baseURL: baseURL(),
 });
 
 export const ServiceInstance = async () => {
     const id = await Device.getId();
 
-    axiosInstance.defaults.auth = {
+    backendAxiosInstance.defaults.auth = {
         username: id.uuid,
         password: authKey(),
     };
 
-    return axiosInstance;
+    return backendAxiosInstance;
 };

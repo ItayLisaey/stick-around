@@ -15,14 +15,14 @@ const tmdbKey = () => {
     return key as string;
 };
 
-const axiosInstance = axios.create({
+export const tmdbAxiosInstance = axios.create({
     baseURL: API_INDEX.default,
 });
 
 export const TMDBInstance = async () => {
-    axiosInstance.defaults.params = {
+    tmdbAxiosInstance.defaults.params = {
         api_key: tmdbKey(),
     };
 
-    return axiosInstance;
+    return tmdbAxiosInstance;
 };

@@ -10,7 +10,7 @@ export interface MoviePageProps {
 }
 
 export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
-    const { data, status, dialog } = useMoviePage(id);
+    const { data, status } = useMoviePage(id);
 
     return (
         <StatusIndicator loading={status.loading} error={status.error}>
@@ -29,11 +29,7 @@ export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
                         </div>
                         <Zoom in={!status.loading}>
                             <div className={classes.waitingContainer}>
-                                <WaitingCard
-                                    movie={data.movie}
-                                    open={dialog.open}
-                                    setOpen={dialog.setOpen}
-                                />
+                                <WaitingCard movie={data.movie} />
                             </div>
                         </Zoom>
                     </main>

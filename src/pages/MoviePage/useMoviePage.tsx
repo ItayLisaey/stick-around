@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
 import { useAnalytics } from '../../hooks/useAnalytics';
@@ -22,8 +22,6 @@ export const useMoviePage = (id: string) => {
         () => movieService.findOne(movieId)
     );
 
-    const [open, setOpen] = useState(false);
-
     const loading = useMemo(() => {
         if (movieStatus === 'loading') return true;
         return false;
@@ -41,10 +39,6 @@ export const useMoviePage = (id: string) => {
         },
         data: {
             movie,
-        },
-        dialog: {
-            open,
-            setOpen,
         },
     };
 };
