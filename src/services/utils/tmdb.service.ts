@@ -1,0 +1,28 @@
+import axios from 'axios';
+import { API_INDEX } from '../../constants/api.constants';
+
+export const TMDBPath = {
+    movie: API_INDEX.MOVIES,
+    image: API_INDEX.IMAGES,
+    imageHD: API_INDEX.HDIMAGES,
+};
+
+const tmdbKey = () => {
+    const key = import.meta.env.VITE_TMDB_KEY;
+    if (!key) {
+        throw new Error('TMDB key undetected');
+    }
+    return key as string;
+};
+
+const axiosInstance = axios.create({
+    baseURL: API_INDEX.default,
+});
+
+export const TMDBInstance = async () => {
+    axiosInstance.defaults.params = {
+        api_key: tmdbKey(),
+    };
+
+    return axiosInstance;
+};

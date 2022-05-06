@@ -9,6 +9,7 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { Home } from './pages/Home';
 import theme from './theme/theme';
 import { DeviceProvider } from './context/device.context';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const firebaseKey = import.meta.env.VITE_FIRE_KEY as string;
 
@@ -37,15 +38,19 @@ function App() {
         }
     });
 
+    const queryClient = new QueryClient();
+
     return (
         <div className="App">
-            <DeviceProvider>
-                <ThemeProvider theme={theme}>
-                    <Router>
-                        <Home />
-                    </Router>
-                </ThemeProvider>
-            </DeviceProvider>
+            <QueryClientProvider client={queryClient}>
+                <DeviceProvider>
+                    <ThemeProvider theme={theme}>
+                        <Router>
+                            <Home />
+                        </Router>
+                    </ThemeProvider>
+                </DeviceProvider>
+            </QueryClientProvider>
         </div>
     );
 }
