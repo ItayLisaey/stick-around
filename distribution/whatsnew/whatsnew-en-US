@@ -1,5 +1,3 @@
-- More information about voting results.
-- Added "Cerified" votes
-- Better caching and loading for movie posters.
-- Reduced loading all through the app.
-- Posting votes in now faster, more secure (and better at preventing spam).
+Major internal changes due to an exploited security vulnerability :(
+- added error boundries for better UX when an issue arises.
+- reduced server capacity (may result in a slower experience) due to budget issues.
