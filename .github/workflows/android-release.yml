@@ -13,7 +13,8 @@ jobs:
         env:
             VITE_TMDB_KEY: ${{ secrets.TMDB_KEY }}
             VITE_FIRE_KEY: ${{ secrets.FIRE_KEY }}
-            VITE_BACKEND: https://stick-around-backend-01-ie7sxtuaoa-uc.a.run.app/api
+            VITE_SA_AUTH: ${{ secret.SA_AUTH_KEY }}
+            VITE_BACKEND: ${{ secret.SA_BACKEND_URL }}
         steps:
             - id: releaseTag
               uses: pozetroninc/github-action-get-latest-release@v0.5.0
