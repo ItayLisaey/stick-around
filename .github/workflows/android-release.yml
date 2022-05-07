@@ -56,7 +56,7 @@ jobs:
                   whatsNewDirectory: distribution/whatsnew
                   mappingFile: android/app/build/outputs/mapping/release/mapping.txt
                   status: draft
-                  changesNotSentForReview: false
+                  changesNotSentForReview: true
             - name: upload to google play on production
               if: ${{ github.ref == 'refs/heads/main' }}
               uses: swootte/upload-google-play@V1.1.5
