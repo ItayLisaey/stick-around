@@ -34,8 +34,6 @@ class MovieService {
             );
             if (!res.data.success) throw new Error();
 
-            if (res.status === 404) console.log('got 404');
-
             return res.data;
         } catch {
             throw new Error("Couldn't fetch movie credits");
