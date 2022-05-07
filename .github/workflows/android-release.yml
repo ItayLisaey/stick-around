@@ -13,7 +13,8 @@ jobs:
         env:
             VITE_TMDB_KEY: ${{ secrets.TMDB_KEY }}
             VITE_FIRE_KEY: ${{ secrets.FIRE_KEY }}
-            VITE_BACKEND: https://stick-around-backend-01-ie7sxtuaoa-uc.a.run.app/api
+            VITE_SA_AUTH: ${{ secrets.SA_AUTH_KEY }}
+            VITE_BACKEND: ${{ secrets.SA_BACKEND_URL }}
         steps:
             - id: releaseTag
               uses: pozetroninc/github-action-get-latest-release@v0.5.0
@@ -55,7 +56,7 @@ jobs:
                   whatsNewDirectory: distribution/whatsnew
                   mappingFile: android/app/build/outputs/mapping/release/mapping.txt
                   status: draft
-                  changesNotSentForReview: false
+                  changesNotSentForReview: true
             - name: upload to google play on production
               if: ${{ github.ref == 'refs/heads/main' }}
               uses: swootte/upload-google-play@V1.1.5

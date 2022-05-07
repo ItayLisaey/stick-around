@@ -1,125 +1,109 @@
-import { CircularProgress } from '@mui/material';
 import classNames from 'classnames';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { CreditsData, creditType, Movie } from '../../types/movies.interface';
+import { useMemo, useState } from 'react';
+import { useQuery } from 'react-query';
 import { shouldWait, waitingText } from '../../utils/credits.utils';
+import { BaseMovie } from '../../models/movie.model';
+import { movieService } from '../../services/movies.service';
+import { StatusIndicator } from '../StatusIndicator';
+import { useDialog } from '../../hooks/useDialog';
 import classes from './waiting-card.module.scss';
 import { CreditsMark } from './CreditsMark';
 import { VoteButton } from './VoteButton';
-import { VotingModal } from './VotingModal';
 import { TrustMessage } from './TrustMessage';
+import { VotingModal } from './VotingModal';
 
 export interface WaitingCardProps {
-    movie: Movie;
-    credits: CreditsData;
-    open: boolean;
-    setOpen: Dispatch<SetStateAction<boolean>>;
-    reloadCredits: () => Promise<void>;
+    movie: BaseMovie;
 }
 
-export const WaitingCard: React.VFC<WaitingCardProps> = ({
-    movie,
-    credits,
-    open,
-    setOpen,
-    reloadCredits,
-}) => {
-    const [modalType, setModalType] = useState<creditType>('during');
-    const [should, setShould] = useState<1 | 0 | -1>(0);
+export const WaitingCard: React.VFC<WaitingCardProps> = ({ movie }) => {
+    const { data: credits, status: creditsStatus } = useQuery(
+        ['credits', movie.id],
+        () => movieService.credits(movie.id),
+        {
+            cacheTime: 0,
+        }
+    );
 
-    const handleClose = () => setOpen(false);
+    const { instance, actions } = useDialog();
+    const [modalType, setModalType] = useState<'during' | 'after'>('during');
 
-    function handleOpen(type: creditType) {
-        setModalType(type);
-        setOpen(true);
+    function handleOpen(type: 'during' | 'after') {
+        return () => {
+            setModalType(type);
+            actions.open();
+        };
     }
 
-    // useEffect(() => {
-    //     console.log('reloaded');
+    const should = useMemo(() => shouldWait(credits?.movie) ?? 0, [credits]);
 
-    //     reloadCredits();
-    // }, [open, movie, reloadCredits]);
+    const creditTypes: Array<'after' | 'during'> = ['after', 'during'];
 
-    useEffect(() => {
-        setShould(shouldWait(credits.movie) ?? 0);
-    }, [credits]);
+    const loading = useMemo(() => {
+        if (creditsStatus === 'loading') return true;
 
-    if (credits) {
-        return (
-            <div
-                className={classNames(
-                    classes.waitingContainer,
-                    { [classes.worth]: should === 1 },
-                    { [classes.notWorth]: should === -1 },
-                    { [classes.maybeWorth]: should === 0 }
-                )}
-            >
-                <h1>Should you wait?</h1>
-                <h2>{waitingText(should)}</h2>
-                <div className={classes.creditsRow}>
-                    <div
-                        className={classNames(classes.creditsContainer, {
-                            [classes.admin]: credits.movie.trust === 1,
-                        })}
-                    >
-                        <span>
-                            <em>During</em> the credits?
-                        </span>
-                        <CreditsMark
-                            count={credits.movie.during}
-                            trust={credits.movie.trust}
-                        />
-                        {credits.movie.trust !== 1 && (
-                            <VoteButton
-                                onClick={handleOpen}
-                                creditType={'during'}
-                                hasVoted={credits.vote.during}
-                            />
-                        )}
-                    </div>
+        return false;
+    }, [creditsStatus]);
+
+    const error = useMemo(() => {
+        if (creditsStatus === 'error') return "Couldn't load credits";
+        return undefined;
+    }, [creditsStatus]);
+
+    return (
+        <StatusIndicator loading={loading} error={error}>
+            {credits && (
+                <div
+                    className={classNames(
+                        classes.waitingContainer,
+                        { [classes.worth]: should === 1 },
+                        { [classes.notWorth]: should === -1 },
+                        { [classes.maybeWorth]: should === 0 }
+                    )}
+                >
+                    <h1>Should you wait?</h1>
+                    <h2>{waitingText(should)}</h2>
+                    {creditTypes.map((type, index) => (
+                        <div className={classes.creditsRow} key={index}>
+                            <div
+                                className={classNames(
+                                    classes.creditsContainer,
+                                    {
+                                        [classes.admin]:
+                                            credits.movie.trust === 1,
+                                    }
+                                )}
+                            >
+                                <span>
+                                    <em>{type.toUpperCase()}</em> the credits?
+                                </span>
+                                <CreditsMark
+                                    count={credits.movie[type]}
+                                    trust={credits.movie.trust}
+                                />
+                                {credits.movie.trust !== 1 && (
+                                    <VoteButton
+                                        onClick={handleOpen(type)}
+                                        creditType={type}
+                                        hasVoted={credits.vote[type]}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                    <TrustMessage
+                        trust={credits.movie.trust}
+                        total={credits.movie.total}
+                    />
+
+                    <VotingModal
+                        {...instance}
+                        actions={actions}
+                        type={modalType}
+                        movie={movie}
+                    />
                 </div>
-                <div className={classes.creditsRow}>
-                    <div
-                        className={classNames(classes.creditsContainer, {
-                            [classes.admin]: credits.movie.trust === 1,
-                        })}
-                    >
-                        <span>
-                            <em>After</em> the credits?
-                        </span>
-                        <CreditsMark
-                            count={credits.movie.after}
-                            trust={credits.movie.trust}
-                        />
-                        {credits.movie.trust !== 1 && (
-                            <VoteButton
-                                onClick={handleOpen}
-                                creditType={'after'}
-                                hasVoted={credits.vote.after}
-                            />
-                        )}
-                    </div>
-                </div>
-                <TrustMessage
-                    trust={credits.movie.trust}
-                    total={credits.movie.total}
-                />
-
-                <VotingModal
-                    open={open}
-                    onClose={handleClose}
-                    creditType={modalType}
-                    setOpen={setOpen}
-                    movie={movie}
-                    reloadCredits={reloadCredits}
-                />
-            </div>
-        );
-    } else {
-        return (
-            <div className={classes.waitingProgressContainer}>
-                <CircularProgress size={60} />
-            </div>
-        );
-    }
+            )}
+        </StatusIndicator>
+    );
 };

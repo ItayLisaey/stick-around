@@ -1,26 +1,60 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import { broadcastsService } from '../../services/broadcasts.service';
+import {
+    getLatestBroadcastID,
+    setLatestBroadcastID,
+} from '../../utils/broadcast.utils';
 import { Broadcast as IBroadcast } from '../../types/broadcast.interface';
-import { setLatestBroadcastID } from '../../utils/broadcast.utils';
 import classes from './broadcast.module.scss';
 
-export interface BroadcastProps {
-    broadcast: IBroadcast;
-    exit: () => void;
-}
+export interface BroadcastProps {}
 
-export const Broadcast: React.VFC<BroadcastProps> = ({ broadcast, exit }) => {
+export const Broadcast: React.VFC<BroadcastProps> = () => {
+    const [bid, setBid] = useState<number>();
+    const [open, setOpen] = useState(true);
+
     useEffect(() => {
-        setLatestBroadcastID(broadcast.bid);
-    }, [broadcast.bid]);
+        const check = async () => {
+            const id = await getLatestBroadcastID();
+            setBid(id);
+        };
+        check();
+    }, []);
 
-    return <div className={classes.root}>
-        <button onClick={exit}>
-            <FontAwesomeIcon icon={faTimes} />
-        </button>
-        <h1>{broadcast.title}</h1>
-        <p>{broadcast.description}</p>
+    useEffect(() => {
+        console.log('bid', bid);
+    }, [bid]);
 
-    </div>;
+    const { data, status } = useQuery<IBroadcast | undefined>(
+        ['broadcasts', bid],
+        () => broadcastsService.latest(bid ?? 0),
+        {
+            enabled: bid !== undefined,
+            onSuccess: (data) => console.log(data),
+        }
+    );
+
+    useEffect(() => {
+        if (status === 'success' && data) {
+            setLatestBroadcastID(data.bid);
+        }
+    }, [data, status]);
+
+    const handleClose = () => setOpen(false);
+
+    if (data && open) {
+        return (
+            <div className={classes.root}>
+                <button onClick={handleClose}>
+                    <FontAwesomeIcon icon={faTimes} />
+                </button>
+                <h1>{data.title}</h1>
+                <p>{data.description}</p>
+            </div>
+        );
+    }
+    return <></>;
 };

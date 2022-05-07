@@ -5,6 +5,9 @@
     padding: {
         block: 1rem;
     }
+    position: sticky;
+    top: 0;
+    background-color: c.$dark;
     // padding-inline: 0.5rem;
     display: flex;
     justify-content: space-between;

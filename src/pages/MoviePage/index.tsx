@@ -1,107 +1,40 @@
-import { CircularProgress, Zoom } from '@mui/material';
-import { logEvent } from 'firebase/analytics';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { getMovieCredits } from '../../api/backend/movies';
-import { getSingleMovie } from '../../api/tmdb/singleMovie';
-import { analytics } from '../../App';
+import { Zoom } from '@mui/material';
 import { MovieCard } from '../../components/MovieCard';
+import { StatusIndicator } from '../../components/StatusIndicator';
 import { WaitingCard } from '../../components/WaitingCard';
-import { DeviceContext } from '../../context/device.context';
-import { CreditsData, Movie } from '../../types/movies.interface';
 import classes from './movie-page.module.scss';
+import { useMoviePage } from './useMoviePage';
 
 export interface MoviePageProps {
     id: string;
 }
 
 export const MoviePage: React.VFC<MoviePageProps> = ({ id }) => {
-    const [movie, setMovie] = useState<Movie>();
-    const [credits, setCredits] = useState<CreditsData>();
-    const [open, setOpen] = useState(false);
-    // const [waitingCardLoaded, setWaitingCardLoaded] = useState(false);
+    const { data, status } = useMoviePage(id);
 
-    const { deviceID } = useContext(DeviceContext);
-
-    useEffect(() => {
-        const movieId = parseInt(id);
-        async function getMovie() {
-            setMovie(await getSingleMovie(movieId));
-        }
-        getMovie();
-    }, [id]);
-
-    useEffect(() => {
-        const movieId = parseInt(id);
-        async function getCredits() {
-            if (deviceID) {
-                const c = await getMovieCredits(movieId, deviceID.uuid);
-                if (c) setCredits(c);
-            }
-        }
-
-        getCredits();
-    }, [deviceID, id]);
-
-    const loaded = useMemo(() => {
-        if (credits) return true;
-        return false;
-    }, [credits]);
-
-    useEffect(() => {
-        if (movie) {
-            logEvent(analytics, 'page_view', {
-                page_title: `movie-page-${movie.id}`,
-            });
-        }
-    }, [movie]);
-
-    const reloadCredits = useCallback(async () => {
-        if (deviceID) {
-            const movieId = parseInt(id);
-            const c = await getMovieCredits(movieId, deviceID.uuid);
-            if (c) setCredits(c);
-        }
-    }, [deviceID]);
-
-    if (movie) {
-        return (
-            <div className={classes.pageContainer}>
-                <main>
-                    <div className={classes.aboutContainer}>
-                        <div className={classes.aboutCard}>
-                            <MovieCard movie={movie} />
+    return (
+        <StatusIndicator loading={status.loading} error={status.error}>
+            {data.movie && (
+                <div className={classes.pageContainer}>
+                    <main>
+                        <div className={classes.aboutContainer}>
+                            <div className={classes.aboutCard}>
+                                <MovieCard movie={data.movie} />
+                            </div>
+                            <div className={classes.aboutDetails}>
+                                <h1>{data.movie.title}</h1>
+                                <h2>{data.movie.releaseDate.getFullYear()}</h2>
+                                <p>{data.movie.overview}</p>
+                            </div>
                         </div>
-                        <div className={classes.aboutDetails}>
-                            <h1>{movie.title}</h1>
-                            <h2>{movie.releaseDate.getFullYear()}</h2>
-                            <p>{movie.overview}</p>
-                        </div>
-                    </div>
-                    {credits ? (
-                        <Zoom in={loaded}>
+                        <Zoom in={!status.loading}>
                             <div className={classes.waitingContainer}>
-                                <WaitingCard
-                                    credits={credits}
-                                    movie={movie}
-                                    open={open}
-                                    setOpen={setOpen}
-                                    reloadCredits={reloadCredits}
-                                />
+                                <WaitingCard movie={data.movie} />
                             </div>
                         </Zoom>
-                    ) : (
-                        <div className={classes.waitingProgressContainer}>
-                            <CircularProgress size={60} />
-                        </div>
-                    )}
-                </main>
-            </div>
-        );
-    } else {
-        return (
-            <div className={classes.progressPageContainer}>
-                <CircularProgress />
-            </div>
-        );
-    }
+                    </main>
+                </div>
+            )}
+        </StatusIndicator>
+    );
 };

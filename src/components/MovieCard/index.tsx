@@ -2,7 +2,6 @@ import { Grow } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { posterImageUrlHD } from '../../api/tmdb/images.api';
-import placeholder from '../../public/images/MoviePosterPlaceholder.png';
 import { Movie } from '../../types/movies.interface';
 import classes from './movie-card.module.scss';
 
@@ -13,7 +12,9 @@ export interface MovieCardProps {
 
 export const MovieCard: React.VFC<MovieCardProps> = ({ movie }) => {
     const [loaded, setLoaded] = useState(false);
-    const [imagePath, setImagePath] = useState(placeholder);
+    const [imagePath, setImagePath] = useState(
+        '/images/MoviePosterPlaceholder.png'
+    );
 
     useEffect(() => {
         const fetchImage = async () => {
@@ -29,7 +30,19 @@ export const MovieCard: React.VFC<MovieCardProps> = ({ movie }) => {
     return (
         <Link className={classes.card} to={`/movies/${movie.id}`}>
             <Grow in={loaded}>
-                <img src={imagePath} alt={`${movie.title} poster image`} />
+                {loaded ? (
+                    <img
+                        loading="lazy"
+                        src={imagePath}
+                        alt={`${movie.title} poster image`}
+                    />
+                ) : (
+                    <img
+                        loading="lazy"
+                        src={'/images/MoviePosterPlaceholder.png'}
+                        alt={`${movie.title} poster image`}
+                    />
+                )}
             </Grow>
         </Link>
     );

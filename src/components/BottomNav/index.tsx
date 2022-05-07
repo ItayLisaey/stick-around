@@ -3,7 +3,6 @@ import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faFilm,
-    faHeart,
     faSearch,
     IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
@@ -28,11 +27,6 @@ const tabs: Record<string, TabProps> = {
         title: 'Search',
         location: '/search',
         icon: faSearch,
-    },
-    donate: {
-        title: 'Support',
-        location: '/donate',
-        icon: faHeart,
     },
 };
 
