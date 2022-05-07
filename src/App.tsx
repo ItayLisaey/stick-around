@@ -11,6 +11,7 @@ import theme from './theme/theme';
 import { DeviceProvider } from './context/device.context';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { HealthCheck } from './components/HealthCheck';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 const firebaseKey = import.meta.env.VITE_FIRE_KEY as string;
 
@@ -43,17 +44,19 @@ function App() {
 
     return (
         <div className="App">
-            <QueryClientProvider client={queryClient}>
-                <DeviceProvider>
-                    <ThemeProvider theme={theme}>
-                        <Router>
-                            <HealthCheck>
-                                <Home />
-                            </HealthCheck>
-                        </Router>
-                    </ThemeProvider>
-                </DeviceProvider>
-            </QueryClientProvider>
+            <ErrorBoundary>
+                <QueryClientProvider client={queryClient}>
+                    <DeviceProvider>
+                        <ThemeProvider theme={theme}>
+                            <Router>
+                                <HealthCheck>
+                                    <Home />
+                                </HealthCheck>
+                            </Router>
+                        </ThemeProvider>
+                    </DeviceProvider>
+                </QueryClientProvider>
+            </ErrorBoundary>
         </div>
     );
 }

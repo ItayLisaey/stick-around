@@ -1,6 +1,6 @@
 import { faExclamationCircle, faPlug } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { healthService } from '../../services/health.service';
 import { StatusIndicator } from '../StatusIndicator';
@@ -28,12 +28,6 @@ export const HealthCheck: React.FC<HealthCheckProps> = ({ children }) => {
         if (tmdbStatus === 'loading') return true;
         return false;
     }, [backendStatus, tmdbStatus]);
-
-    useEffect(() => {
-        console.log('backendStatus', backendStatus);
-
-        console.log('health', health);
-    }, [backendStatus, health]);
 
     const content = useMemo(() => {
         switch (health) {
