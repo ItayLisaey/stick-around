@@ -24,16 +24,11 @@ export const Broadcast: React.VFC<BroadcastProps> = () => {
         check();
     }, []);
 
-    useEffect(() => {
-        console.log('bid', bid);
-    }, [bid]);
-
     const { data, status } = useQuery<IBroadcast | undefined>(
         ['broadcasts', bid],
         () => broadcastsService.latest(bid ?? 0),
         {
             enabled: bid !== undefined,
-            onSuccess: (data) => console.log(data),
         }
     );
 
