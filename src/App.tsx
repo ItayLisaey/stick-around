@@ -6,10 +6,10 @@ import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getFirestore } from '@firebase/firestore';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { Home } from './pages/Home';
 import theme from './theme/theme';
 import { DeviceProvider } from './context/device.context';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { HealthCheck } from './components/HealthCheck';
 import { ErrorBoundary } from './components/ErrorBoundary';
 

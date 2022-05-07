@@ -1,29 +1,29 @@
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
+import { useQuery } from 'react-query';
 import { shouldWait, waitingText } from '../../utils/credits.utils';
+import { BaseMovie } from '../../models/movie.model';
+import { movieService } from '../../services/movies.service';
+import { StatusIndicator } from '../StatusIndicator';
+import { useDialog } from '../../hooks/useDialog';
 import classes from './waiting-card.module.scss';
 import { CreditsMark } from './CreditsMark';
 import { VoteButton } from './VoteButton';
 import { TrustMessage } from './TrustMessage';
-import { BaseMovie } from '../../models/movie.model';
-import { movieService } from '../../services/movies.service';
-import { useQuery } from 'react-query';
-import { StatusIndicator } from '../StatusIndicator';
 import { VotingModal } from './VotingModal';
-import { useDialog } from '../../hooks/useDialog';
 
 export interface WaitingCardProps {
     movie: BaseMovie;
 }
 
 export const WaitingCard: React.VFC<WaitingCardProps> = ({ movie }) => {
-    const {
-        data: credits,
-        status: creditsStatus,
-        isFetching,
-    } = useQuery(['credits', movie.id], () => movieService.credits(movie.id), {
-        cacheTime: 0,
-    });
+    const { data: credits, status: creditsStatus } = useQuery(
+        ['credits', movie.id],
+        () => movieService.credits(movie.id),
+        {
+            cacheTime: 0,
+        }
+    );
 
     const { instance, actions } = useDialog();
     const [modalType, setModalType] = useState<'during' | 'after'>('during');

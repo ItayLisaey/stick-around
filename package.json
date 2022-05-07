@@ -7,6 +7,7 @@
         "serve": "vite preview",
         "resources": "capacitor-resources -p android,ios",
         "open:android": "npm run build && npx cap sync android && npx cap open android",
+        "start:android": "npm run build && npx cap sync android && npx cap run android",
         "open:ios": "npm run build && npx cap sync ios && npx cap open ios"
     },
     "dependencies": {
