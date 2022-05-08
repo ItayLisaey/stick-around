@@ -16,6 +16,14 @@ jobs:
             VITE_SA_AUTH: ${{ secrets.SA_AUTH_KEY }}
             VITE_BACKEND: ${{ secrets.SA_BACKEND_URL }}
         steps:
+            - uses: 'finnp/create-file-action@master'
+              env:
+                  FILE_NAME: '.env'
+                  FILE_DATA: |
+                      VITE_TMDB_KEY: ${{ secrets.TMDB_KEY }}
+                      VITE_FIRE_KEY: ${{ secrets.FIRE_KEY }}
+                      VITE_SA_AUTH: ${{ secrets.SA_AUTH_KEY }}
+                      VITE_BACKEND: ${{ secrets.SA_BACKEND_URL }}
             - id: releaseTag
               uses: pozetroninc/github-action-get-latest-release@v0.5.0
               with:
