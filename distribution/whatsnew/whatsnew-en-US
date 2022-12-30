@@ -1,3 +1,0 @@
-Major internal changes due to an exploited security vulnerability :(
-- added error boundries for better UX when an issue arises.
-- reduced server capacity (may result in a slower experience) due to budget issues.
