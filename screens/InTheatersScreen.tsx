@@ -1,33 +1,61 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MasonryFlashList } from '@shopify/flash-list';
-import { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import { ActivityIndicatorWrapper } from '../components/ActivityIndicatorWrapper';
 import { MovieCard } from '../components/MovieCard';
 
 import { View } from '../components/Themed';
+import Colors from '../constants/Colors';
+import useColorScheme from '../hooks/useColorScheme';
 import useNowPlaying from '../hooks/UseNowPlaying';
-import { RootTabScreenProps } from '../types';
+import { InTheatersStackParamList } from '../types';
 
 export default function InTheatersScreen({
   navigation,
-}: RootTabScreenProps<'InTheaters'>) {
-  const [page, setPage] = useState<number>(1);
-
-  const { movies, hasMore, status } = useNowPlaying(page);
-
-  const getMoreMovies = () => {
-    if (hasMore) {
-      setPage((p) => p + 1);
-    }
-  };
+}: NativeStackScreenProps<InTheatersStackParamList>) {
+  const scheme = useColorScheme();
+  const { movies, status, fetchNext } = useNowPlaying();
 
   return (
     <View style={styles.container}>
       <ActivityIndicatorWrapper status={status}>
         <MasonryFlashList
-          renderItem={({ item }) => <MovieCard key={item.id} {...item} />}
+          renderItem={({ item, index }) => {
+            if (index === movies.length - 1) {
+              return (
+                <ActivityIndicator
+                  color={Colors[scheme].background}
+                  style={{
+                    flex: 1,
+                    backgroundColor: Colors[scheme].text,
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    alignItems: 'center',
+                    margin: 5,
+                    borderRadius: 5,
+                    height: 200,
+                  }}
+                />
+              );
+            }
+
+            return (
+              <MovieCard
+                key={item.id}
+                {...item}
+                onPress={() =>
+                  navigation.push('Movie', {
+                    id: item.id,
+                    posterPath: item.posterPath,
+                    overview: item.overview,
+                    title: item.title,
+                  })
+                }
+              />
+            );
+          }}
           numColumns={3}
-          // onEndReached={getMoreMovies}
+          onEndReached={fetchNext}
           contentContainerStyle={{ padding: 5 }}
           keyExtractor={(item) => item.id.toString()}
           estimatedItemSize={20}
@@ -43,6 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // alignItems: 'center',
     justifyContent: 'center',
+    borderTopColor: 'transparent',
   },
   listItem: {
     flex: 1,
@@ -51,8 +80,6 @@ const styles = StyleSheet.create({
 
     // marginBottom: 10,
     backgroundColor: 'transparent',
-    borderBottomColor: 'rgba(0, 0, 0, 0.1)',
-    borderBottomWidth: 1,
 
     // backgroundColor: Colors['light'].tabIconDefault,
     // alignItems: 'center',

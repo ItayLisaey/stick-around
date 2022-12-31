@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getBackendURL } from '../../utils/api.utils';
 import { getDeviceID } from '../../utils/device.utils';
 
 const baseURL = () => {
@@ -18,7 +19,7 @@ const authKey = () => {
 };
 
 export const backendAxiosInstance = axios.create({
-  baseURL: baseURL(),
+  baseURL: getBackendURL() ?? 'http://localhost:3000',
 });
 
 export const ServiceInstance = async () => {

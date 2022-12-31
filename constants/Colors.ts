@@ -11,7 +11,7 @@ export default {
     tabBarBackground: '#1c1c1c',
   },
   dark: {
-    text: '#94afe3',
+    text: '#bdd3ff',
     background: '#261c2c',
     tint: tintColorDark,
     tabIconDefault: '#ccc',

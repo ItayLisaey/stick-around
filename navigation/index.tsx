@@ -12,19 +12,19 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
-import { View } from '../components/Themed';
+import { ColorSchemeName, Platform } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import InTheatersScreen from '../screens/InTheatersScreen';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import { SingleMovieScreen } from '../screens/SingleMovieScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import {
+  InTheatersStackParamList,
   RootStackParamList,
   RootTabParamList,
-  RootTabScreenProps,
 } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -57,6 +57,7 @@ function RootNavigator() {
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
+
       <Stack.Screen
         name='NotFound'
         component={NotFoundScreen}
@@ -80,46 +81,23 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName='InTheaters'
+      initialRouteName='InTheatersStack'
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: Colors[colorScheme].tabBarBackground,
+          backgroundColor: Colors[colorScheme].background,
+          borderTopColor: 'transparent',
         },
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}
     >
       <BottomTab.Screen
-        name='InTheaters'
-        component={InTheatersScreen}
-        options={({ navigation }: RootTabScreenProps<'InTheaters'>) => ({
+        name='InTheatersStack'
+        component={InTheatersNavigator}
+        options={{
           title: 'In Theaters',
-          headerShown: true,
-          headerStyle: {
-            height: 100,
-            backgroundColor: Colors[colorScheme].tabBarBackground,
-          },
-          headerTitle: 'In Theaters',
-          headerRight: () => (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: 20,
-                backgroundColor: 'transparent',
-              }}
-            >
-              <Pressable onPress={() => navigation.navigate('Search')}>
-                <Feather
-                  name='search'
-                  size={20}
-                  color={Colors[colorScheme].text}
-                />
-              </Pressable>
-            </View>
-          ),
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name='film' color={color} />,
-        })}
+        }}
       />
       <BottomTab.Screen
         name='Search'
@@ -133,6 +111,57 @@ function BottomTabNavigator() {
     </BottomTab.Navigator>
   );
 }
+const InTheatersStack = createNativeStackNavigator<InTheatersStackParamList>();
+
+function InTheatersNavigator() {
+  const colorScheme = useColorScheme();
+
+  return (
+    <InTheatersStack.Navigator>
+      <InTheatersStack.Screen
+        name='InTheaters'
+        component={InTheatersScreen}
+        options={({ navigation }) => ({
+          animation: 'slide_from_right',
+          title: 'In Theaters',
+          headerShown: true,
+          headerLargeTitle: true,
+          headerTintColor: Colors[colorScheme].text,
+
+          headerTransparent: false,
+          headerStyle: {
+            flexDirection: 'column',
+            // height: 100,
+            backgroundColor: Colors[colorScheme].background,
+            borderBottomWidth: 10,
+            borderBottomColor: 'blue',
+          },
+        })}
+      />
+      <InTheatersStack.Screen
+        name='Movie'
+        component={SingleMovieScreen}
+        options={({ navigation, route }) => ({
+          animation:
+            Platform.OS === 'ios' ? 'slide_from_right' : 'fade_from_bottom',
+
+          headerLargeTitle: true,
+          title: route.params.title,
+          headerShown: true,
+          headerTransparent: false,
+          headerTintColor: Colors[colorScheme].text,
+          headerShadowVisible: false,
+          headerStyle: {
+            color: Colors[colorScheme].text,
+            flexDirection: 'column',
+            height: 100,
+            backgroundColor: Colors[colorScheme].background,
+          },
+        })}
+      />
+    </InTheatersStack.Navigator>
+  );
+}
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -141,5 +170,5 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof Feather>['name'];
   color: string;
 }) {
-  return <Feather size={20} style={{ marginBottom: -3 }} {...props} />;
+  return <Feather size={20} {...props} />;
 }

@@ -1,13 +1,13 @@
 import * as SecureStore from 'expo-secure-store';
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-native-uuid';
 
 export const getDeviceID = async () => {
   const savedID = await SecureStore.getItemAsync('secure_deviceid');
   if (savedID) {
-    return savedID;
+    return savedID.toString();
   }
 
-  const newID = uuidv4();
-  await SecureStore.setItemAsync('secure_deviceid', newID);
-  return newID;
+  const newID = uuid.v4();
+  await SecureStore.setItemAsync('secure_deviceid', newID.toString());
+  return newID.toString();
 };

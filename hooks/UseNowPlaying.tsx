@@ -1,23 +1,42 @@
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { getNowPlaying } from '../api/tmdb/nowPlaying';
-import { BaseMovie } from '../models/movie.model';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import { getMoviesNowPlaying } from '../api/tmdb/nowPlaying';
 
-export default function useNowPlaying(pageNumber: number) {
-  const [movies, setMovies] = useState<BaseMovie[]>([]);
-  const [hasMore, setHasMore] = useState(false);
-  const { data, status } = useQuery(
-    ['movies', pageNumber],
-    () => getNowPlaying(pageNumber),
+export default function useNowPlaying() {
+  // const [movies, setMovies] = useState<BaseMovie[]>([]);
+  // const [hasMore, setHasMore] = useState(false);
+  const {
+    status,
+    data,
+    error,
+    isFetching,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
+    fetchNextPage,
+    fetchPreviousPage,
+    hasNextPage,
+    hasPreviousPage,
+  } = useInfiniteQuery(
+    ['movies'],
+    async ({ pageParam = 0 }) => await getMoviesNowPlaying(pageParam),
     {
-      onSuccess: (data) => {
-        if (data) {
-          setMovies((m) => m.concat(data));
-          setHasMore(data.length > 0);
-        }
-      },
+      getPreviousPageParam: (firstPage) => firstPage?.previousPage ?? undefined,
+      getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
     }
   );
 
-  return { status, movies, hasMore };
+  const movies = useMemo(() => {
+    if (data) {
+      return data.pages.map((p) => p.data).flat();
+    }
+    return [];
+  }, [data]);
+
+  const fetchNext = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  return { status, movies, fetchNext };
 }

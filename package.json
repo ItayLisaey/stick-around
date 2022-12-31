@@ -20,6 +20,7 @@
     "@shopify/flash-list": "^1.4.0",
     "@tanstack/react-query": "^4.20.4",
     "axios": "^1.2.2",
+    "base-64": "^1.0.0",
     "expo": "~47.0.9",
     "expo-asset": "~8.7.0",
     "expo-constants": "~14.0.2",
@@ -38,12 +39,17 @@
     "react-native-intersection-observer": "^0.0.9",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
+    "react-native-uuid": "^2.0.1",
     "react-native-web": "~0.18.9",
     "uuid": "^9.0.0",
-    "zod": "^3.20.2"
+    "zod": "^3.20.2",
+    "react-native-reanimated": "~2.12.0",
+    "react-native-gesture-handler": "~2.8.0",
+    "@gorhom/bottom-sheet": "^4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@types/base-64": "^1.0.0",
     "@types/react": "~18.0.24",
     "@types/react-native": "~0.70.6",
     "@types/uuid": "^9.0.0",

@@ -9,6 +9,7 @@ import {
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { BaseMovie } from './models/movie.model';
 
 declare global {
   namespace ReactNavigation {
@@ -26,8 +27,13 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
 
 export type RootTabParamList = {
-  InTheaters: undefined;
+  InTheatersStack: undefined;
   Search: undefined;
+};
+
+export type InTheatersStackParamList = {
+  InTheaters: undefined;
+  Movie: Omit<BaseMovie, 'releaseDate'>;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

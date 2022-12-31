@@ -33,7 +33,8 @@ class MovieService {
       if (!res.data.success) throw new Error();
 
       return res.data;
-    } catch {
+    } catch (e) {
+      console.error(JSON.stringify(e));
       throw new Error("Couldn't fetch movie credits");
     }
   }

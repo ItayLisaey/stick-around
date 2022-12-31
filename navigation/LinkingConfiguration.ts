@@ -15,9 +15,10 @@ const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       Root: {
         screens: {
-          InTheaters: {
+          InTheatersStack: {
             screens: {
               InTheathersScreen: 'In Theaters',
+              MovieScreen: 'Movie',
             },
           },
           Search: {
