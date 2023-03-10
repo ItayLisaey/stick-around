@@ -3,7 +3,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import { MovieDetails } from '../components/MovieDetails';
-import { Text, View } from '../components/Themed';
+import { View } from '../components/Themed';
+import { VoteSheet } from '../components/VoteSheet';
 import { WaitingCard } from '../components/WaitingCard';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -25,6 +26,7 @@ export const SingleMovieScreen = ({
   }, []);
 
   const openBottomSheet = () => bottomSheetRef.current?.snapToIndex(0);
+  const closeBottomSheet = () => bottomSheetRef.current?.close();
 
   // variables
   const snapPoints = useMemo(() => ['50%'], []);
@@ -46,23 +48,11 @@ export const SingleMovieScreen = ({
         overview={route.params.overview}
       />
       <WaitingCard movieId={route.params.id} openSheet={openBottomSheet} />
-      <BottomSheet
-        detached={true}
-        enablePanDownToClose={true}
+      <VoteSheet
         ref={bottomSheetRef}
-        index={-1}
         snapPoints={snapPoints}
-        bottomInset={20}
-        onChange={handleSheetChanges}
-        style={{
-          // add horizontal space
-          marginHorizontal: 24,
-        }}
-      >
-        <Text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-        </Text>
-      </BottomSheet>
+        closeSheet={closeBottomSheet}
+      />
     </View>
   );
 };

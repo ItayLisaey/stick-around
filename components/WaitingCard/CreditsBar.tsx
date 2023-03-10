@@ -1,5 +1,7 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
+import Colors from '../../constants/Colors';
+import useColorScheme from '../../hooks/useColorScheme';
 import { Text, View } from '../Themed';
 
 type CreditsBarProps = {
@@ -23,6 +25,7 @@ type CreditsMarkProps = {
   count: number;
 };
 const CreditsMark = ({ count }: CreditsMarkProps) => {
+  const scheme = useColorScheme();
   const status = () => {
     if (count > 0) return 1;
     if (count === 0) return 0;
@@ -36,9 +39,9 @@ const CreditsMark = ({ count }: CreditsMarkProps) => {
   } as const;
 
   const color = {
-    1: 'green',
-    0: 'purple',
-    [-1]: 'red',
+    1: Colors[scheme].indicator.positive,
+    0: Colors[scheme].indicator.neutral,
+    [-1]: Colors[scheme].indicator.negative,
   };
 
   const countLength = count.toString().length;

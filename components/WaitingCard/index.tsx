@@ -1,11 +1,15 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { Button, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
+import Colors from '../../constants/Colors';
+import useColorScheme from '../../hooks/useColorScheme';
 import { movieService } from '../../services/movies.service';
 import { shouldWait } from '../../utils/credits.utils';
 import { ActivityIndicatorWrapper } from '../ActivityIndicatorWrapper';
 import { Text, View } from '../Themed';
 import { CreditsBar } from './CreditsBar';
+import { TrustMessage } from './TrustMessage';
 
 type WaitingCardProps = {
   movieId: number;
@@ -16,11 +20,19 @@ export const WaitingCard = ({ movieId, openSheet }: WaitingCardProps) => {
   const { data, status } = useQuery(['credits', movieId], () =>
     movieService.credits(movieId)
   );
+  const scheme = useColorScheme();
   const should = useMemo(() => shouldWait(data?.movie) ?? 0, [data]);
 
   const style = (sts: typeof status) => {
     if (sts === 'loading') return styles.loading;
     return styles.container;
+  };
+
+  const waitingColor = {
+    0: Colors[scheme].indicator.neutral,
+    1: Colors[scheme].indicator.positive,
+    [-1]: Colors[scheme].indicator.negative,
+    2: '#6e85b2',
   };
 
   return (
@@ -31,11 +43,26 @@ export const WaitingCard = ({ movieId, openSheet }: WaitingCardProps) => {
       }}
     >
       <ActivityIndicatorWrapper status={status}>
-        <Text style={styles.title}>Should you wait?</Text>
-        <Text style={styles.answer}>{waitingText[should]}</Text>
+        <View style={styles.msgContainer}>
+          <View style={{ backgroundColor: 'transparent' }}>
+            <Text style={styles.title}>Should you wait?</Text>
+            <Text style={styles.answer}>{waitingText[should]}</Text>
+          </View>
+          <Pressable
+            style={({ pressed }) =>
+              !pressed
+                ? styles.voteButton
+                : { ...styles.voteButton, backgroundColor: '#e0e0e0' }
+            }
+            onPress={openSheet}
+          >
+            <MaterialIcons size={18} name='how-to-vote' color={'black'} />
+            <Text style={styles.voteButtonText}>Vote</Text>
+          </Pressable>
+        </View>
         <CreditsBar type={'after'} count={data?.movie.after!} />
         <CreditsBar type={'during'} count={data?.movie.during!} />
-        <Button title='vote' onPress={openSheet} />
+        <TrustMessage trust={data?.movie.trust!} total={data?.movie.total!} />
       </ActivityIndicatorWrapper>
     </View>
   );
@@ -68,6 +95,13 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
   },
+  msgContainer: {
+    width: '100%',
+    backgroundColor: 'transparent',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   answer: {
     color: 'white',
 
@@ -77,6 +111,29 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     marginBottom: 15,
   },
+  voteButton: {
+    // borderColor: 'white',
+    // borderWidth: 1,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    aspectRatio: 1,
+    display: 'flex',
+
+    // width: '50%',
+    padding: 5,
+
+    paddingHorizontal: 10,
+    flexDirection: 'column',
+    alignSelf: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  voteButtonText: {
+    marginTop: 2,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black',
+  },
 });
 
 const waitingText = {
@@ -84,11 +141,4 @@ const waitingText = {
   1: 'Yes',
   [-1]: 'No',
   2: 'Loading...',
-};
-
-const waitingColor = {
-  0: '#6e85b2',
-  1: '#4aa96c',
-  [-1]: 'hsla(0, 84%, 64%, 1)',
-  2: '#6e85b2',
 };
