@@ -1,5 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NetError } from './components/NetError';
+import { ServiceError } from './components/ServiceError';
 import { GlobalProvider } from './contexts/GlobalProvider';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
@@ -16,6 +18,8 @@ export default function App() {
     return (
       <GlobalProvider>
         <SafeAreaProvider>
+          <NetError />
+          <ServiceError />
           <Navigation colorScheme={colorScheme} />
           <StatusBar />
         </SafeAreaProvider>
