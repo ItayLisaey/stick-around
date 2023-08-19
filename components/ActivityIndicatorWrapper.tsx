@@ -30,10 +30,12 @@ export const ActivityIndicatorWrapper = ({
 
   if (status === 'loading') {
     return (
-      <ActivityIndicator
-        color={getActivityIndicatorColor()}
-        size={getActivityIndicatorSize()}
-      />
+      <View style={styles.container}>
+        <ActivityIndicator
+          color={getActivityIndicatorColor()}
+          size={getActivityIndicatorSize()}
+        />
+      </View>
     );
   }
   if (status === 'error') {
@@ -67,6 +69,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // top: '50%',
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },

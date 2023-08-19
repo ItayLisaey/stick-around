@@ -8,24 +8,32 @@ import { Text, View } from '../Themed';
 type FormProps = {
   form: VoteForm;
   setForm: React.Dispatch<React.SetStateAction<VoteForm>>;
+  handleSubmit: () => void;
 };
 
-export const VoteSheetForm = ({ form, setForm }: FormProps) => {
+export const VoteSheetForm = ({ form, setForm, handleSubmit }: FormProps) => {
   const scheme = useColorScheme();
+
+  const handleCreditPart = (type: 'during' | 'after') => {
+    return () => setForm((prev) => ({ ...prev, type }));
+  };
+
+  const handleHasScene = (value: 'true' | 'false') => {
+    return () => {
+      setForm((prev) => ({ ...prev, value: value === 'true' }));
+      if (form.type && form.value) {
+        handleSubmit();
+      }
+    };
+  };
 
   // page 1
   if (form.type === undefined) {
     return (
-      <View>
+      <View style={styles.root}>
         <Text style={styles.text}>Which part of the credits?</Text>
-        <Button
-          title='During'
-          onPress={() => setForm((prev) => ({ ...prev, type: 'during' }))}
-        />
-        <Button
-          title='After'
-          onPress={() => setForm((prev) => ({ ...prev, type: 'after' }))}
-        />
+        <Button title='During' onPress={handleCreditPart('during')} />
+        <Button title='After' onPress={handleCreditPart('after')} />
       </View>
     );
   }
@@ -34,19 +42,17 @@ export const VoteSheetForm = ({ form, setForm }: FormProps) => {
 
   if (form.type !== undefined && form.value === undefined) {
     return (
-      <View>
+      <View style={styles.root}>
         <Text style={styles.text}>
           Is there a scene {form.type} the credits?
         </Text>
-        <View>
-          <Button
-            title='Yes'
-            onPress={() => setForm((prev) => ({ ...prev, value: true }))}
-          />
-          <Button
-            title='No'
-            onPress={() => setForm((prev) => ({ ...prev, value: false }))}
-          />
+        <View
+          style={{
+            backgroundColor: 'transparent',
+          }}
+        >
+          <Button title='Yes' onPress={handleHasScene('true')} />
+          <Button title='No' onPress={handleHasScene('false')} />
         </View>
       </View>
     );
@@ -54,7 +60,11 @@ export const VoteSheetForm = ({ form, setForm }: FormProps) => {
 
   return (
     <View style={styles.thanksContainer}>
-      <FontAwesome5 name='thumbs-up' color={Colors[scheme].text} size={36} />
+      <FontAwesome5
+        name='thumbs-up'
+        color={Colors[scheme].background}
+        size={36}
+      />
       <Text style={{ ...styles.text, marginTop: 16 }}>Thanks For Voting!</Text>
     </View>
   );
@@ -62,17 +72,17 @@ export const VoteSheetForm = ({ form, setForm }: FormProps) => {
 
 const styles = StyleSheet.create({
   root: {
-    padding: 16,
-    display: 'flex',
-    justifyContent: 'space-between',
-    height: '100%',
+    backgroundColor: 'transparent',
   },
   thanksContainer: {
     display: 'flex',
+    backgroundColor: 'transparent',
+
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
+    color: Colors['light'].text,
     paddingHorizontal: 16,
     fontSize: 20,
     fontWeight: 'bold',

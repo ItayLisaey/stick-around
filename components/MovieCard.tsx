@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Image, Pressable, StyleSheet } from 'react-native';
+import { Dimensions, Image, Pressable, StyleSheet } from 'react-native';
 import { BaseMovie } from '../models/movie.model';
 import { Text, View } from './Themed';
 const placeholder = require('../assets/images/MoviePosterPlaceholder.png');
@@ -43,12 +43,12 @@ export const MovieCard = ({ ...props }: MovieCardProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: Dimensions.get('screen').width / 3 - 10,
     alignItems: 'center',
     justifyContent: 'center',
     // backgroundColor: 'red',
-    borderRadius: 5,
-    overflow: 'hidden',
-    margin: 5,
+    // borderRadius: 5,
+    // overflow: 'hidden',
 
     // marginRight: 0,
   },
@@ -61,8 +61,9 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   image: {
-    width: 150,
+    width: Dimensions.get('screen').width / 3 - 10,
     height: 200,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
+    borderRadius: 5,
   },
 });

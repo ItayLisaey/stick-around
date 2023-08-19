@@ -1,7 +1,7 @@
 import { BaseMovie } from '../models/movie.model';
 import { ServerResponse } from '../types/api.types';
 import { CreditsData, creditType } from '../types/movies.interface';
-import { TMDBMovie } from '../types/tmdb.types';
+import { TMDBMovie, TMDBPagination } from '../types/tmdb.types';
 import { tmdbMovieToBaseMovie } from '../utils/movie.utils';
 import { ServiceInstance } from './utils/backend.service';
 import { TMDBInstance } from './utils/tmdb.service';
@@ -20,6 +20,56 @@ class MovieService {
 
       const movie = tmdbMovieToBaseMovie(res.data);
       return movie;
+    } catch {
+      throw new Error("Couldn't fetch movie information");
+    }
+  }
+
+  async search(query: string, page?: number) {
+    try {
+      const res = await (
+        await TMDBInstance()
+      ).get<TMDBPagination<TMDBMovie>>('search/movie', {
+        params: {
+          language: 'en-US',
+          query: query,
+          page: page,
+        },
+      });
+
+      const movies = res.data.results.map((movie) =>
+        tmdbMovieToBaseMovie(movie)
+      );
+      console.log(movies);
+      return {
+        movies,
+        page: res.data.page,
+        total_pages: res.data.total_pages,
+      };
+    } catch {
+      throw new Error("Couldn't fetch movie information");
+    }
+  }
+
+  async nowPlaying(page: number) {
+    try {
+      const res = await (
+        await TMDBInstance()
+      ).get<TMDBPagination<TMDBMovie>>('movie/now_playing', {
+        params: {
+          language: 'en-US',
+          page: page,
+        },
+      });
+
+      const movies = res.data.results.map((movie) =>
+        tmdbMovieToBaseMovie(movie)
+      );
+      return {
+        movies,
+        page: res.data.page,
+        total_pages: res.data.total_pages,
+      };
     } catch {
       throw new Error("Couldn't fetch movie information");
     }

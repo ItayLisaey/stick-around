@@ -19,12 +19,13 @@ import useColorScheme from '../hooks/useColorScheme';
 import InTheatersScreen from '../screens/InTheatersScreen';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import { SearchScreen } from '../screens/SearchScreen';
 import { SingleMovieScreen } from '../screens/SingleMovieScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
 import {
   InTheatersStackParamList,
   RootStackParamList,
   RootTabParamList,
+  SearchStackParamList,
 } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -55,7 +56,7 @@ function RootNavigator() {
       <Stack.Screen
         name='Root'
         component={BottomTabNavigator}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, animation: 'slide_from_right' }}
       />
 
       <Stack.Screen
@@ -95,13 +96,14 @@ function BottomTabNavigator() {
         component={InTheatersNavigator}
         options={{
           title: 'In Theaters',
+
           headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name='film' color={color} />,
         }}
       />
       <BottomTab.Screen
         name='Search'
-        component={TabTwoScreen}
+        component={SearchNavigator}
         options={{
           title: 'Search',
           headerShown: false,
@@ -160,6 +162,58 @@ function InTheatersNavigator() {
         })}
       />
     </InTheatersStack.Navigator>
+  );
+}
+
+const SearchStack = createNativeStackNavigator<SearchStackParamList>();
+
+function SearchNavigator() {
+  const colorScheme = useColorScheme();
+
+  return (
+    <SearchStack.Navigator>
+      <SearchStack.Screen
+        name='SearchScreen'
+        component={SearchScreen}
+        options={({ navigation }) => ({
+          animation: 'slide_from_right',
+          title: 'Search',
+          headerShown: true,
+          headerLargeTitle: true,
+          headerTintColor: Colors[colorScheme].text,
+
+          headerTransparent: false,
+          headerStyle: {
+            flexDirection: 'column',
+            // height: 100,
+            backgroundColor: Colors[colorScheme].background,
+            borderBottomWidth: 10,
+            borderBottomColor: 'blue',
+          },
+        })}
+      />
+      <SearchStack.Screen
+        name='Movie'
+        component={SingleMovieScreen}
+        options={({ navigation, route }) => ({
+          animation:
+            Platform.OS === 'ios' ? 'slide_from_right' : 'fade_from_bottom',
+
+          headerLargeTitle: true,
+          title: route.params.title,
+          headerShown: true,
+          headerTransparent: false,
+          headerTintColor: Colors[colorScheme].text,
+          headerShadowVisible: false,
+          headerStyle: {
+            color: Colors[colorScheme].text,
+            flexDirection: 'column',
+            height: 100,
+            backgroundColor: Colors[colorScheme].background,
+          },
+        })}
+      />
+    </SearchStack.Navigator>
   );
 }
 

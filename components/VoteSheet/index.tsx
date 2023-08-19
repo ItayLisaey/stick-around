@@ -28,6 +28,11 @@ export const VoteSheet = forwardRef<BottomSheetMethods, Props>((props, ref) => {
     props.closeSheet();
   };
 
+  const handleSubmit = () => {
+    console.log('form submitted', form);
+    props.closeSheet();
+  };
+
   return (
     <BottomSheet
       {...props}
@@ -35,24 +40,29 @@ export const VoteSheet = forwardRef<BottomSheetMethods, Props>((props, ref) => {
       enablePanDownToClose={true}
       index={-1}
       ref={ref}
-      bottomInset={10}
+      // bottomInset={10}
       backgroundStyle={{
         borderRadius: 8,
-        backgroundColor: Colors[scheme].background,
+        backgroundColor: Colors[scheme].text,
       }}
       style={{
-        borderRadius: 0,
+        backgroundColor: Colors[scheme].text,
+        borderRadius: 20,
         // add horizontal space
-        marginHorizontal: 24,
+        // marginHorizontal: 24,
       }}
     >
       <View style={styles.root}>
-        <VoteSheetForm form={form} setForm={setForm} />
+        <VoteSheetForm
+          form={form}
+          setForm={setForm}
+          handleSubmit={handleSubmit}
+        />
         <View style={styles.cancelButtonContainer}>
           <Button
             title='Cancel'
             onPress={onCancel}
-            color={Colors[scheme].text}
+            color={Colors[scheme].background}
           />
         </View>
       </View>
@@ -62,12 +72,14 @@ export const VoteSheet = forwardRef<BottomSheetMethods, Props>((props, ref) => {
 
 const styles = StyleSheet.create({
   root: {
+    backgroundColor: 'transparent',
     padding: 16,
     display: 'flex',
     justifyContent: 'space-between',
     height: '100%',
   },
   cancelButtonContainer: {
+    backgroundColor: 'transparent',
     display: 'flex',
     justifyContent: 'center',
     width: '100%',

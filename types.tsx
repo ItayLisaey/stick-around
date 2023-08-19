@@ -36,6 +36,11 @@ export type InTheatersStackParamList = {
   Movie: Omit<BaseMovie, 'releaseDate'>;
 };
 
+export type SearchStackParamList = {
+  SearchScreen: undefined;
+  Movie: Omit<BaseMovie, 'releaseDate'>;
+};
+
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
   CompositeScreenProps<
     BottomTabScreenProps<RootTabParamList, Screen>,

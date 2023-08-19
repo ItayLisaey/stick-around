@@ -1,66 +1,84 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { MasonryFlashList } from '@shopify/flash-list';
-import { ActivityIndicator, StyleSheet } from 'react-native';
-import { ActivityIndicatorWrapper } from '../components/ActivityIndicatorWrapper';
+import { FlashList } from '@shopify/flash-list';
+import { ActivityIndicator, Dimensions, StyleSheet } from 'react-native';
 import { MovieCard } from '../components/MovieCard';
 
+import { ActivityIndicatorWrapper } from '../components/ActivityIndicatorWrapper';
 import { View } from '../components/Themed';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import useNowPlaying from '../hooks/UseNowPlaying';
+import { useMovieSearch } from '../hooks/useMovieSearch';
 import { InTheatersStackParamList } from '../types';
 
 export default function InTheatersScreen({
   navigation,
 }: NativeStackScreenProps<InTheatersStackParamList>) {
   const scheme = useColorScheme();
-  const { movies, status, fetchNext } = useNowPlaying();
+
+  const { searchResults, status, fetchNext } = useMovieSearch('');
 
   return (
     <View style={styles.container}>
       <ActivityIndicatorWrapper status={status}>
-        <MasonryFlashList
-          renderItem={({ item, index }) => {
-            if (index === movies.length - 1) {
+        <View
+          style={{
+            height: Dimensions.get('screen').height,
+            width: Dimensions.get('screen').width,
+            paddingLeft: 10,
+            paddingRight: 5,
+          }}
+        >
+          <FlashList
+            renderItem={({ item, index }) => {
+              if (index === searchResults.length - 1) {
+                return (
+                  <ActivityIndicator
+                    color={Colors[scheme].background}
+                    style={{
+                      flex: 1,
+                      backgroundColor: Colors[scheme].text,
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                      margin: 5,
+                      borderRadius: 5,
+                      // width: Dimensions.get('screen').width / 3,
+                      height: 200,
+                    }}
+                  />
+                );
+              }
+
               return (
-                <ActivityIndicator
-                  color={Colors[scheme].background}
-                  style={{
-                    flex: 1,
-                    backgroundColor: Colors[scheme].text,
-                    justifyContent: 'center',
-                    alignContent: 'center',
-                    alignItems: 'center',
-                    margin: 5,
-                    borderRadius: 5,
-                    height: 200,
-                  }}
+                <MovieCard
+                  key={item.id}
+                  {...item}
+                  onPress={() =>
+                    navigation.push('Movie', {
+                      id: item.id,
+                      posterPath: item.posterPath,
+                      overview: item.overview,
+                      title: item.title,
+                    })
+                  }
                 />
               );
-            }
-
-            return (
-              <MovieCard
-                key={item.id}
-                {...item}
-                onPress={() =>
-                  navigation.push('Movie', {
-                    id: item.id,
-                    posterPath: item.posterPath,
-                    overview: item.overview,
-                    title: item.title,
-                  })
-                }
+            }}
+            numColumns={3}
+            onEndReached={fetchNext}
+            ItemSeparatorComponent={() => (
+              <View
+                style={{
+                  height: 5,
+                  width: 5,
+                }}
               />
-            );
-          }}
-          numColumns={3}
-          onEndReached={fetchNext}
-          contentContainerStyle={{ padding: 5 }}
-          keyExtractor={(item) => item.id.toString()}
-          estimatedItemSize={20}
-          data={movies}
-        />
+            )}
+            keyExtractor={(item) => item.id.toString()}
+            estimatedItemSize={20}
+            data={searchResults}
+          />
+        </View>
       </ActivityIndicatorWrapper>
     </View>
   );
@@ -69,8 +87,8 @@ export default function InTheatersScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     borderTopColor: 'transparent',
   },
   listItem: {
