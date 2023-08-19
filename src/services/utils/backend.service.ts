@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { Device } from '@capacitor/device';
+import axios from 'axios';
 
 const baseURL = () => {
     const url = import.meta.env.VITE_BACKEND;
@@ -25,7 +25,7 @@ export const ServiceInstance = async () => {
     const id = await Device.getId();
 
     backendAxiosInstance.defaults.auth = {
-        username: id.uuid,
+        username: id.identifier,
         password: authKey(),
     };
 

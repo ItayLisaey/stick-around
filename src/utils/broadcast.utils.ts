@@ -1,7 +1,7 @@
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 
 export async function getLatestBroadcastID(): Promise<number> {
-    const { value } = await Storage.get({ key: 'broadcast' });
+    const { value } = await Preferences.get({ key: 'broadcast' });
     if (!value) {
         return 0;
     } else {
@@ -11,7 +11,7 @@ export async function getLatestBroadcastID(): Promise<number> {
 
 export async function setLatestBroadcastID(id: number | undefined) {
     if (id) {
-        await Storage.set({
+        await Preferences.set({
             key: 'broadcast',
             value: id.toString(),
         });
