@@ -5,7 +5,7 @@ import { Text, View } from './Themed';
 const placeholder = require('../assets/images/MoviePosterPlaceholder.png');
 
 type MovieCardProps = BaseMovie & {
-  onPress: () => void;
+  // onPress: () => void;
 };
 
 export const MovieCard = ({ ...props }: MovieCardProps) => {
@@ -31,7 +31,7 @@ export const MovieCard = ({ ...props }: MovieCardProps) => {
     props.title.slice(0, 20) + `${props.title.length > 20 ? '...' : ''}`;
 
   return (
-    <Pressable onPress={props.onPress}>
+    <Pressable >
       <View style={styles.container}>
         <Image style={styles.image} source={source} />
         {!loaded && <Text style={styles.title}>{title}</Text>}

@@ -9,7 +9,6 @@ export const TMDBPath = {
 
 const tmdbKey = () => {
   const key = process.env.EXPO_PUBLIC_TMDB_KEY;
-  console.log("key", key);
   if (!key) {
     throw new Error("TMDB key undetected");
   }

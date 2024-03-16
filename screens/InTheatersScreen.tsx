@@ -2,6 +2,9 @@ import { FlashList } from '@shopify/flash-list';
 import { ActivityIndicator, Dimensions, StyleSheet } from 'react-native';
 import { MovieCard } from '../components/MovieCard';
 
+import { BaseMovie } from '@/models/movie.model';
+import { Link, useNavigation } from 'expo-router';
+import { useCallback } from 'react';
 import { ActivityIndicatorWrapper } from '../components/ActivityIndicatorWrapper';
 import { View } from '../components/Themed';
 import Colors from '../constants/Colors';
@@ -10,8 +13,10 @@ import { useMovieSearch } from '../hooks/useMovieSearch';
 
 export default function InTheatersScreen() {
   const scheme = useColorScheme();
+  const navigator = useNavigation();
 
   const { searchResults, status, fetchNext } = useMovieSearch('');
+  const keyExtractor = useCallback((item: BaseMovie, i: number) => `${i}-${item.id}`, []);
 
   return (
     <View style={styles.container}>
@@ -25,8 +30,8 @@ export default function InTheatersScreen() {
           }}
         >
           <FlashList
-            renderItem={({ item }) => {
-              if (1 === searchResults.length - 1) {
+            renderItem={({ item, index }) => {
+              if (index === searchResults.length - 1) {
                 return (
                   <ActivityIndicator
                     color={Colors[scheme].background}
@@ -46,18 +51,12 @@ export default function InTheatersScreen() {
               }
 
               return (
-                <MovieCard
-                  key={item.id}
-                  {...item}
-                  onPress={() => { }
-                    // navigator.push('Movie', {
-                    //   id: item.id,
-                    //   posterPath: item.posterPath,
-                    //   overview: item.overview,
-                    //   title: item.title,
-                    // })
-                  }
-                />
+                <Link href={`/(tabs)/movies/${item.id}`}>
+                  <MovieCard
+                    key={item.id}
+                    {...item}
+                  />
+                </Link>
               );
             }}
             numColumns={3}
@@ -70,7 +69,7 @@ export default function InTheatersScreen() {
                 }}
               />
             )}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={keyExtractor}
             estimatedItemSize={20}
             data={searchResults}
           />
