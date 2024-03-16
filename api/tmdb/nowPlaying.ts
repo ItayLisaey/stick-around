@@ -1,52 +1,13 @@
-import axios from 'axios';
-import { BaseMovie } from '../../models/movie.model';
-import { parseMovieDate } from '../../utils/movie.utils';
-
-// export async function getNowPlaying(pageNumber: number) {
-//   const url = (pageNumber: number) =>
-//     apiUrl(
-//       ['language=en-US', `page=${pageNumber}`],
-//       API_INDEX.PLAYING,
-//       'movie'
-//     );
-
-//   try {
-//     console.log(
-//       `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.TMDB_KEY}&language=en-US&page=${pageNumber}}`
-//     );
-//     const res = await fetch(
-//       `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.TMDB_KEY}&language=en-US&page=${pageNumber}}`
-//     );
-
-//     const data = await res.json();
-//     const currentMovies = data.results.map(
-//       (movie: {
-//         id: any;
-//         title: any;
-//         release_date: any;
-//         overview: any;
-//         poster_path: any;
-//       }) => ({
-//         id: movie.id,
-//         title: movie.title,
-//         releaseDate: parseMovieDate(movie.release_date),
-//         overview: movie.overview ?? '',
-//         posterPath: movie.poster_path ?? '',
-//       })
-//     );
-
-//     return currentMovies as Movie[];
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
+import axios from "axios";
+import { BaseMovie } from "../../models/movie.model";
+import { parseMovieDate } from "../../utils/movie.utils";
 
 export async function getMoviesNowPlaying(page: number) {
   const res = await axios.get(
     `https://api.themoviedb.org/3/movie/now_playing?api_key=${
       process.env.TMDB_KEY
     }&language=en-US&page=${page + 1}`,
-    {}
+    {},
   );
   const { data } = res;
 
@@ -77,9 +38,9 @@ export async function getMoviesNowPlaying(page: number) {
       id: movie.id,
       title: movie.title,
       releaseDate: parseMovieDate(movie.release_date),
-      overview: movie.overview ?? '',
-      posterPath: movie.poster_path ?? '',
-    })
+      overview: movie.overview ?? "",
+      posterPath: movie.poster_path ?? "",
+    }),
   );
 
   return {

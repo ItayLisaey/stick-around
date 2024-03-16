@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_INDEX } from '../../constants/api.constants';
+import axios from "axios";
+import { API_INDEX } from "../../constants/api.constants";
 
 export const TMDBPath = {
   movie: API_INDEX.MOVIES,
@@ -8,9 +8,10 @@ export const TMDBPath = {
 };
 
 const tmdbKey = () => {
-  const key = process.env.TMDB_KEY;
+  const key = process.env.EXPO_PUBLIC_TMDB_KEY;
+  console.log("key", key);
   if (!key) {
-    throw new Error('TMDB key undetected');
+    throw new Error("TMDB key undetected");
   }
   return key as string;
 };

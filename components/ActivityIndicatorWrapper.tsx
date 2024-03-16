@@ -5,7 +5,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import { Text, View } from './Themed';
 
 type ActivityIndicatorWrapperProps = {
-  status: 'loading' | 'success' | 'error';
+  status: 'pending' | 'success' | 'error';
 };
 
 export const ActivityIndicatorWrapper = ({
@@ -28,7 +28,7 @@ export const ActivityIndicatorWrapper = ({
     return 36;
   };
 
-  if (status === 'loading') {
+  if (status === 'pending') {
     return (
       <View style={styles.container}>
         <ActivityIndicator

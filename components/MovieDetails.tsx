@@ -1,5 +1,5 @@
 import { Image, ScrollView, StyleSheet } from 'react-native';
-import { Text, View } from '../components/Themed';
+import { Text, View } from './Themed';
 
 type MovieDetailsProps = {
   overview: string;

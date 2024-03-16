@@ -1,22 +1,22 @@
-import { BaseMovie } from '../models/movie.model';
-import { ServerResponse } from '../types/api.types';
-import { CreditsData, creditType } from '../types/movies.interface';
-import { TMDBMovie, TMDBPagination } from '../types/tmdb.types';
-import { tmdbMovieToBaseMovie } from '../utils/movie.utils';
-import { ServiceInstance } from './utils/backend.service';
-import { TMDBInstance } from './utils/tmdb.service';
+import { BaseMovie } from "../models/movie.model";
+import { ServerResponse } from "../types/api.types";
+import { CreditsData, creditType } from "../types/movies.interface";
+import { TMDBMovie, TMDBPagination } from "../types/tmdb.types";
+import { tmdbMovieToBaseMovie } from "../utils/movie.utils";
+import { ServiceInstance } from "./utils/backend.service";
+import { TMDBInstance } from "./utils/tmdb.service";
 
 class MovieService {
-  service_prefix = 'movies';
-  vote_prefix = 'vote';
+  service_prefix = "movies";
+  vote_prefix = "vote";
 
-  tmdb_prefix = 'movie';
+  tmdb_prefix = "movie";
 
   async findOne(movieId: number): Promise<BaseMovie> {
     try {
       const res = await (
         await TMDBInstance()
-      ).get<TMDBMovie>(this.tmdb_prefix + '/' + movieId);
+      ).get<TMDBMovie>(this.tmdb_prefix + "/" + movieId);
 
       const movie = tmdbMovieToBaseMovie(res.data);
       return movie;
@@ -29,9 +29,9 @@ class MovieService {
     try {
       const res = await (
         await TMDBInstance()
-      ).get<TMDBPagination<TMDBMovie>>('search/movie', {
+      ).get<TMDBPagination<TMDBMovie>>("search/movie", {
         params: {
-          language: 'en-US',
+          language: "en-US",
           query: query,
           page: page,
         },
@@ -55,9 +55,9 @@ class MovieService {
     try {
       const res = await (
         await TMDBInstance()
-      ).get<TMDBPagination<TMDBMovie>>('movie/now_playing', {
+      ).get<TMDBPagination<TMDBMovie>>("movie/now_playing", {
         params: {
-          language: 'en-US',
+          language: "en-US",
           page: page,
         },
       });
@@ -79,7 +79,7 @@ class MovieService {
     try {
       const res = await (
         await ServiceInstance()
-      ).get<ServerResponse<CreditsData>>(this.service_prefix + '/' + movieId);
+      ).get<ServerResponse<CreditsData>>(this.service_prefix + "/" + movieId);
       if (!res.data.success) throw new Error();
 
       return res.data;
@@ -97,7 +97,7 @@ class MovieService {
       };
       const res = await (
         await ServiceInstance()
-      ).post<ServerResponse<{}>>(this.vote_prefix + '/' + movieId, payload);
+      ).post<ServerResponse<{}>>(this.vote_prefix + "/" + movieId, payload);
 
       if (!res.data.success) throw new Error();
 

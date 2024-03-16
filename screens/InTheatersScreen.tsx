@@ -1,4 +1,3 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FlashList } from '@shopify/flash-list';
 import { ActivityIndicator, Dimensions, StyleSheet } from 'react-native';
 import { MovieCard } from '../components/MovieCard';
@@ -8,11 +7,8 @@ import { View } from '../components/Themed';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import { useMovieSearch } from '../hooks/useMovieSearch';
-import { InTheatersStackParamList } from '../types';
 
-export default function InTheatersScreen({
-  navigation,
-}: NativeStackScreenProps<InTheatersStackParamList>) {
+export default function InTheatersScreen() {
   const scheme = useColorScheme();
 
   const { searchResults, status, fetchNext } = useMovieSearch('');
@@ -29,8 +25,8 @@ export default function InTheatersScreen({
           }}
         >
           <FlashList
-            renderItem={({ item, index }) => {
-              if (index === searchResults.length - 1) {
+            renderItem={({ item }) => {
+              if (1 === searchResults.length - 1) {
                 return (
                   <ActivityIndicator
                     color={Colors[scheme].background}
@@ -53,13 +49,13 @@ export default function InTheatersScreen({
                 <MovieCard
                   key={item.id}
                   {...item}
-                  onPress={() =>
-                    navigation.push('Movie', {
-                      id: item.id,
-                      posterPath: item.posterPath,
-                      overview: item.overview,
-                      title: item.title,
-                    })
+                  onPress={() => { }
+                    // navigator.push('Movie', {
+                    //   id: item.id,
+                    //   posterPath: item.posterPath,
+                    //   overview: item.overview,
+                    //   title: item.title,
+                    // })
                   }
                 />
               );
